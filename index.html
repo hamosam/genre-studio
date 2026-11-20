@@ -1,0 +1,4549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>장르 조작단: 같은 대사, 다른 느낌 스튜디오</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=East+Sea+Dokdo&family=Gowun+Dodum&family=Jua&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-soft: #eef2ff;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --border: #dbe3ee;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #e0e7ff;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 26px rgba(15, 23, 42, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+      background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 260px, #f1f5f9 100%);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    .app-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 18px 48px;
+    }
+
+    /* ===== Top Header ===== */
+    .top-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .header-main-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .brand-text p {
+      margin: 2px 0 0;
+      font-size: 0.86rem;
+      color: var(--text-sub);
+    }
+
+    .header-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mission-select-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-soft);
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid #c7d2fe;
+    }
+
+    .mission-select-wrap label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #3730a3;
+      white-space: nowrap;
+    }
+
+    .mission-select {
+      border: 1px solid #a5b4fc;
+      background: #ffffff;
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-utility {
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-main);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-utility:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      transform: translateY(-1px);
+    }
+
+    .btn-utility:active {
+      transform: translateY(0);
+    }
+
+    .header-sub-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .teacher-presets {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preset-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-right: 2px;
+    }
+
+    .btn-demo {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1e293b;
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-demo:hover {
+      background: var(--primary-soft);
+      border-color: #818cf8;
+      color: #312e81;
+    }
+
+    /* ===== Mission Goal Banner ===== */
+    .mission-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, #fef3c7, #fffbeb);
+      border: 1px solid #fcd34d;
+      color: #78350f;
+      border-radius: var(--radius-md);
+      padding: 11px 16px;
+      margin-bottom: 16px;
+      font-size: 0.94rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mission-banner.is-free {
+      background: linear-gradient(90deg, #e0e7ff, #f5f3ff);
+      border-color: #c7d2fe;
+      color: #312e81;
+    }
+
+    /* ===== 16:9 Stage Monitor ===== */
+    .stage-bezel {
+      background: #0b1120;
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--shadow-md);
+      border: 2px solid #1e293b;
+      margin-bottom: 16px;
+    }
+
+    .stage-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+
+    .scene-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .scene-pill {
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #cbd5e1;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .scene-pill:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .scene-pill.active {
+      background: #4f46e5;
+      border-color: #818cf8;
+      color: #ffffff;
+    }
+
+    .monitor-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #475569;
+      display: inline-block;
+    }
+
+    .monitor-status.is-playing .status-dot {
+      background: #ef4444;
+      box-shadow: 0 0 10px #ef4444;
+      animation: pulseDot 0.9s infinite;
+    }
+
+    .monitor-status.is-playing {
+      color: #fecaca;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.25); }
+    }
+
+    .stage-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 500px;
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #e2e8f0;
+      user-select: none;
+    }
+
+    .stage-camera-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      transition: filter 0.35s ease;
+    }
+
+    .stage-scene-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stage-scene-svg.hidden {
+      display: none;
+    }
+
+    /* Visual filter & camera animations */
+    .stage-viewport.fx-grayscale-vignette .stage-camera-layer {
+      filter: grayscale(100%) contrast(1.28) brightness(0.82);
+    }
+
+    .stage-viewport.fx-grayscale-vignette.is-playing .stage-camera-layer {
+      animation: horrorFlicker 2.6s infinite;
+    }
+
+    .stage-viewport.fx-cinema .stage-camera-layer {
+      filter: sepia(22%) contrast(1.08) saturate(0.88) brightness(0.95);
+    }
+
+    .stage-viewport.fx-grayscale-vignette.fx-cinema .stage-camera-layer {
+      filter: grayscale(100%) contrast(1.3) brightness(0.8);
+    }
+
+    .stage-viewport.fx-zoom.is-playing .stage-camera-layer {
+      animation: slowZoomIn 6.5s ease-out forwards;
+    }
+
+    .stage-viewport.fx-grayscale-vignette.fx-zoom.is-playing .stage-camera-layer {
+      animation: slowZoomIn 6.5s ease-out forwards, horrorFlicker 2.6s infinite;
+    }
+
+    .stage-viewport.fx-shake.is-playing {
+      animation: cameraShake 0.45s infinite;
+    }
+
+    @keyframes slowZoomIn {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.26); }
+    }
+
+    @keyframes horrorFlicker {
+      0%, 100% { opacity: 1; }
+      48% { opacity: 1; }
+      49% { opacity: 0.72; }
+      50% { opacity: 1; }
+      82% { opacity: 0.94; }
+      83% { opacity: 0.68; }
+      84% { opacity: 1; }
+    }
+
+    @keyframes cameraShake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(-5px, 3px) rotate(-0.6deg); }
+      40% { transform: translate(5px, -4px) rotate(0.6deg); }
+      60% { transform: translate(-4px, -3px) rotate(-0.4deg); }
+      80% { transform: translate(4px, 4px) rotate(0.4deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    /* Overlay layers */
+    .vignette-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle at center, transparent 36%, rgba(0, 0, 0, 0.82) 100%);
+      transition: opacity 0.3s ease;
+    }
+
+    .stage-viewport.fx-grayscale-vignette .vignette-overlay {
+      opacity: 1;
+    }
+
+    .romance-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 182, 217, 0.38), transparent 55%),
+        radial-gradient(circle at 80% 30%, rgba(251, 113, 133, 0.25), transparent 55%),
+        linear-gradient(180deg, rgba(255, 192, 203, 0.16), rgba(244, 114, 182, 0.24));
+      transition: opacity 0.35s ease;
+    }
+
+    .stage-viewport.fx-romance .romance-overlay {
+      opacity: 1;
+    }
+
+    .particle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stage-viewport.fx-romance .particle-layer {
+      opacity: 1;
+    }
+
+    .sparkle-particle {
+      position: absolute;
+      bottom: -24px;
+      font-size: 22px;
+      opacity: 0;
+      animation: floatSparkle 3.4s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+    }
+
+    @keyframes floatSparkle {
+      0% {
+        transform: translateY(0) scale(0.7) rotate(0deg);
+        opacity: 0;
+      }
+      18% {
+        opacity: 0.95;
+      }
+      85% {
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(-420px) scale(1.25) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    .letterbox-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 0;
+      background: #000000;
+      pointer-events: none;
+      transition: height 0.35s ease;
+      z-index: 4;
+    }
+
+    .letterbox-top { top: 0; }
+    .letterbox-bottom { bottom: 0; }
+
+    .stage-viewport.fx-cinema .letterbox-bar {
+      height: 10%;
+    }
+
+    /* Broadcast Watermark Badge */
+    .watermark-badge {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 6;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      background: rgba(15, 23, 42, 0.65);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(4px);
+      transition: all 0.25s ease;
+    }
+
+    .watermark-badge.wm-horror {
+      background: rgba(0, 0, 0, 0.78);
+      color: #ff4d4d;
+      border-color: rgba(255, 59, 59, 0.6);
+    }
+
+    .watermark-badge.wm-horror.is-playing {
+      animation: recBlink 1s steps(2, start) infinite;
+    }
+
+    .watermark-badge.wm-comedy {
+      background: linear-gradient(135deg, #facc15, #f97316);
+      color: #1e1b4b;
+      border-color: #ffffff;
+      box-shadow: 0 3px 0 #1e1b4b;
+      transform: rotate(-2deg);
+    }
+
+    .watermark-badge.wm-docu {
+      background: rgba(15, 23, 42, 0.82);
+      color: #e2e8f0;
+      font-family: 'Nanum Myeongjo', 'Batang', serif;
+      letter-spacing: 0.1em;
+    }
+
+    .watermark-badge.wm-romance {
+      background: rgba(244, 114, 182, 0.82);
+      color: #ffffff;
+      border-color: #fbcfe8;
+    }
+
+    .watermark-badge.wm-original {
+      background: rgba(100, 116, 139, 0.85);
+      color: #ffffff;
+    }
+
+    @keyframes recBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.35; }
+    }
+
+    /* Subtitle Stage Layer */
+    .subtitle-container {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 11%;
+      z-index: 7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      pointer-events: none;
+      min-height: 68px;
+    }
+
+    .subtitle-text {
+      display: inline-block;
+      max-width: 100%;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      padding: 6px 16px;
+      border-radius: 10px;
+      font-size: clamp(1.25rem, 3.3vw, 2.5rem);
+      line-height: 1.3;
+    }
+
+    /* Subtitle 1: Basic */
+    .subtitle-text.sub-basic {
+      font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(15, 23, 42, 0.58);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Subtitle 2: Horror */
+    .subtitle-text.sub-horror {
+      font-family: 'East Sea Dokdo', 'Gungsuh', 'Nanum Myeongjo', serif;
+      font-size: clamp(1.75rem, 4.4vw, 3.3rem);
+      font-weight: 700;
+      color: #ff1e1e;
+      letter-spacing: 0.06em;
+      text-shadow:
+        0 0 12px rgba(185, 28, 28, 0.95),
+        0 4px 10px rgba(0, 0, 0, 0.98),
+        -2px -2px 0 #1f0303,
+        2px 2px 0 #1f0303;
+    }
+
+    .subtitle-text.sub-horror.anim-play {
+      animation: horrorTextFade 1.1s ease-out forwards, horrorTextJitter 0.14s infinite;
+    }
+
+    @keyframes horrorTextFade {
+      0% { opacity: 0; transform: scale(0.92); filter: blur(4px); }
+      100% { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
+
+    @keyframes horrorTextJitter {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-1.5px, 1px); }
+      50% { transform: translate(1.5px, -1px); }
+      75% { transform: translate(-1px, -1.5px); }
+      100% { transform: translate(1px, 1.5px); }
+    }
+
+    /* Subtitle 3: Comedy */
+    .subtitle-text.sub-comedy {
+      font-family: 'Jua', 'Black Han Sans', 'Malgun Gothic', sans-serif;
+      font-size: clamp(1.5rem, 3.9vw, 2.9rem);
+      font-weight: 400;
+      color: #ffe600;
+      text-shadow:
+        -3px -3px 0 #111827,
+         3px -3px 0 #111827,
+        -3px  3px 0 #111827,
+         3px  3px 0 #111827,
+         0px  4px 0 #111827,
+         0px  7px 14px rgba(0, 0, 0, 0.55);
+      transform: rotate(-1.5deg);
+    }
+
+    .subtitle-text.sub-comedy.anim-play {
+      animation: comedyBounceIn 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, comedyWobble 1.6s ease-in-out 0.65s infinite;
+    }
+
+    @keyframes comedyBounceIn {
+      0% { opacity: 0; transform: scale(0.25) rotate(-10deg) translateY(35px); }
+      60% { opacity: 1; transform: scale(1.16) rotate(3deg) translateY(-8px); }
+      100% { opacity: 1; transform: scale(1) rotate(-1.5deg) translateY(0); }
+    }
+
+    @keyframes comedyWobble {
+      0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+      50% { transform: rotate(1.5deg) translateY(-5px); }
+    }
+
+    /* Subtitle 4: Documentary */
+    .subtitle-text.sub-docu {
+      font-family: 'Nanum Myeongjo', 'Batang', serif;
+      font-size: clamp(1.25rem, 3.1vw, 2.25rem);
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: 0.08em;
+      background: rgba(0, 0, 0, 0.45);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: #f8fafc;
+      vertical-align: -0.12em;
+      margin-left: 3px;
+      animation: cursorBlink 0.7s steps(2, start) infinite;
+    }
+
+    @keyframes cursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* Subtitle 5: Romance */
+    .subtitle-text.sub-romance {
+      font-family: 'Gowun Dodum', 'Malgun Gothic', sans-serif;
+      font-size: clamp(1.35rem, 3.4vw, 2.55rem);
+      font-weight: 700;
+      color: #fff1f2;
+      text-shadow:
+        0 0 14px rgba(244, 63, 94, 0.9),
+        0 0 26px rgba(251, 113, 133, 0.75),
+        0 2px 6px rgba(136, 19, 55, 0.85);
+    }
+
+    .subtitle-text.sub-romance.anim-play {
+      animation: romanceFloatUp 0.95s ease-out forwards;
+    }
+
+    @keyframes romanceFloatUp {
+      0% { opacity: 0; transform: translateY(18px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== Dialogue Selector & Playback Controls ===== */
+    .control-bar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .dialogue-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-mini-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dialogue-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dialogue-chip {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text-main);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .dialogue-chip:hover {
+      background: #eef2ff;
+      border-color: #818cf8;
+    }
+
+    .dialogue-chip.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(79, 70, 229, 0.25);
+    }
+
+    .dialogue-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .dialogue-input {
+      flex: 1;
+      min-width: 240px;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      transition: border-color 0.15s ease;
+    }
+
+    .dialogue-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .char-counter {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    .playback-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .btn-play-main {
+      border: none;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 13px 24px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+      transition: transform 0.12s ease, filter 0.15s ease;
+    }
+
+    .btn-play-main:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-play-original {
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1e293b;
+      border-radius: 14px;
+      padding: 11px 18px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-play-original:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+    }
+
+    .btn-stop {
+      border: none;
+      background: var(--danger);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-stop:hover:not(:disabled) {
+      background: var(--danger-hover);
+    }
+
+    .btn-stop:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .playback-live-badge {
+      margin-left: auto;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      background: #f1f5f9;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .playback-live-badge.active-genre {
+      background: #e0e7ff;
+      color: #3730a3;
+      border-color: #a5b4fc;
+    }
+
+    .playback-live-badge.active-original {
+      background: #e2e8f0;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+
+    /* ===== Reflection Card ===== */
+    .reflection-card {
+      background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+      border: 2px solid #6ee7b7;
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      animation: fadeSlideIn 0.35s ease;
+    }
+
+    .reflection-card.hidden {
+      display: none;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reflection-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .reflection-title {
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: #065f46;
+      margin: 0;
+    }
+
+    .reflection-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .summary-tag {
+      background: #ffffff;
+      border: 1px solid #a7f3d0;
+      color: #047857;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .reflection-prompt {
+      margin: 0;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #064e3b;
+    }
+
+    /* ===== 4-Card Manipulation Panel ===== */
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .studio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 10px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+
+    .card-badge {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .option-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .option-btn {
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      color: var(--text-main);
+      border-radius: 11px;
+      padding: 9px 13px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .option-btn:hover {
+      background: #eef2ff;
+      border-color: #818cf8;
+    }
+
+    .option-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(79, 70, 229, 0.24);
+    }
+
+    /* Visual typography hints on Subtitle option buttons */
+    .option-btn[data-sub="horror"]:not(.active) {
+      color: #b91c1c;
+      font-family: 'Nanum Myeongjo', 'Gungsuh', serif;
+    }
+
+    .option-btn[data-sub="comedy"]:not(.active) {
+      color: #b45309;
+      font-family: 'Jua', sans-serif;
+    }
+
+    .option-btn[data-sub="docu"]:not(.active) {
+      font-family: 'Nanum Myeongjo', serif;
+    }
+
+    .option-btn[data-sub="romance"]:not(.active) {
+      color: #be185d;
+      font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .sub-group-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .btn-mini-preview {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-mini-preview:hover {
+      background: var(--primary-soft);
+      border-color: #818cf8;
+      color: #312e81;
+    }
+
+    /* TTS Controls */
+    .tts-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .switch-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .switch-label input {
+      width: 19px;
+      height: 19px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .tts-notice {
+      font-size: 0.78rem;
+      color: #b45309;
+      font-weight: 700;
+    }
+
+    .slider-block {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .slider-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .slider-value {
+      background: var(--primary-soft);
+      color: #3730a3;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+    }
+
+    .slider-input {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .slider-ends {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    .slider-wrap.is-disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .filter-hint {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    @media (max-width: 820px) {
+      .panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .playback-live-badge {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app-shell {
+        padding: 12px 12px 36px;
+      }
+
+      .stage-bezel {
+        padding: 10px;
+        border-radius: 16px;
+      }
+
+      .btn-play-main,
+      .btn-play-original,
+      .btn-stop,
+      .btn-record {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ===== Custom Media & Record & Modal ===== */
+    .stage-media-el {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .stage-media-el.hidden {
+      display: none;
+    }
+
+    .upload-pill-btn {
+      border: 1px dashed #64748b;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .upload-pill-btn:hover {
+      background: #1e293b;
+      border-color: #818cf8;
+      color: #ffffff;
+    }
+
+    .upload-pill-btn.active {
+      background: #4f46e5;
+      border-style: solid;
+      border-color: #818cf8;
+      color: #ffffff;
+    }
+
+    .custom-audio-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .custom-audio-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 220px;
+    }
+
+    .btn-record {
+      border: 2px solid #0ea5e9;
+      background: #e0f2fe;
+      color: #0369a1;
+      border-radius: 14px;
+      padding: 11px 18px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-record:hover:not(:disabled) {
+      background: #bae6fd;
+      transform: translateY(-1px);
+    }
+
+    .btn-record.is-recording {
+      background: #ef4444;
+      border-color: #dc2626;
+      color: #ffffff;
+      animation: pulseDot 1s infinite;
+    }
+
+    .btn-record:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .record-tip {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* Teacher Topic Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.hidden {
+      display: none;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 1.12rem;
+      font-weight: 900;
+    }
+
+    .modal-close {
+      border: none;
+      background: #f1f5f9;
+      color: #475569;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-field label {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .form-field input,
+    .form-field textarea {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 0.94rem;
+      font-family: inherit;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      padding-top: 6px;
+    }
+
+    .btn-primary-sm {
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-primary-sm:hover {
+      background: var(--primary-hover);
+    }
+
+    .custom-missions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px dashed var(--border);
+      padding-top: 10px;
+    }
+
+    .custom-mission-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+    }
+
+    .custom-mission-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .btn-xs {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      border-radius: 7px;
+      padding: 4px 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-xs.danger {
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    /* ===== 1. Spoiler Hide & Stickers ===== */
+    .watermark-badge.is-hidden {
+      display: none !important;
+    }
+
+    .spoiler-toggle-btn {
+      border: 1px solid #475569;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .spoiler-toggle-btn.active {
+      background: #f59e0b;
+      border-color: #fbbf24;
+      color: #1e1b4b;
+    }
+
+    .sticker-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .stage-sticker {
+      position: absolute;
+      font-size: clamp(2.1rem, 5vw, 3.6rem);
+      line-height: 1;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      pointer-events: auto;
+      padding: 4px;
+      border-radius: 10px;
+      border: 2px dashed transparent;
+      transform: translate(-50%, -50%) scale(var(--stk-scale, 1));
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+      transition: border-color 0.12s ease;
+    }
+
+    .stage-sticker:active {
+      cursor: grabbing;
+    }
+
+    .stage-sticker.is-selected {
+      border-color: #facc15;
+      background: rgba(15, 23, 42, 0.25);
+    }
+
+    .sticker-del-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .stage-sticker.is-selected .sticker-del-btn {
+      display: flex;
+    }
+
+    .sticker-edit-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      padding-left: 8px;
+      border-left: 1px solid #334155;
+    }
+
+    .sticker-edit-controls.is-disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .sticker-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #1e293b;
+      border-radius: 12px;
+    }
+
+    .sticker-toolbar-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #e2e8f0;
+      margin-right: 4px;
+    }
+
+    .sticker-add-btn {
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 4px 9px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.15s ease;
+    }
+
+    .sticker-add-btn:hover {
+      background: #334155;
+      transform: translateY(-1px);
+    }
+
+    /* ===== 2. News & Shorts Subtitles ===== */
+    .subtitle-text.sub-news {
+      font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.15rem, 2.8vw, 2.05rem);
+      color: #ffffff;
+      background: linear-gradient(90deg, #dc2626 0%, #991b1b 22%, #0f172a 22%, #1e293b 100%);
+      border-left: 6px solid #facc15;
+      border-radius: 6px;
+      padding: 10px 18px 10px 22px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .subtitle-text.sub-news::before {
+      content: '속보 ';
+      color: #fde047;
+      margin-right: 8px;
+    }
+
+    .subtitle-text.sub-shorts {
+      font-family: 'Black Han Sans', 'Jua', 'Malgun Gothic', sans-serif;
+      font-size: clamp(1.65rem, 4.3vw, 3.2rem);
+      font-weight: 400;
+      color: #ffffff;
+      background: rgba(79, 70, 229, 0.88);
+      padding: 8px 20px;
+      border-radius: 14px;
+      box-shadow: 0 6px 0 #1e1b4b;
+      transform: scale(1.03);
+    }
+
+    .subtitle-text.sub-shorts.anim-play {
+      animation: shortsPop 0.38s cubic-bezier(0.22, 1.4, 0.36, 1) forwards;
+    }
+
+    @keyframes shortsPop {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1.03); }
+    }
+
+    .watermark-badge.wm-news {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #fef08a;
+    }
+
+    .watermark-badge.wm-shorts {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    /* ===== 3. Twist Cut (반전 컷) ===== */
+    .twist-box {
+      background: #fff7ed;
+      border: 1.5px solid #fdba74;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .twist-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .twist-select {
+      border: 1px solid #fb923c;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* ===== 4. Voice Recorder & Modulator ===== */
+    .voice-mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 11px;
+    }
+
+    .voice-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-sub);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .voice-tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+
+    .voice-panel.hidden {
+      display: none;
+    }
+
+    .mic-record-box {
+      background: #fef2f2;
+      border: 1.5px dashed #fca5a5;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mic-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-mic {
+      border: none;
+      background: #ef4444;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-mic.recording {
+      background: #991b1b;
+      animation: pulseDot 0.9s infinite;
+    }
+
+    /* ===== 5. A vs B Battle Compare Panel ===== */
+    .compare-card {
+      background: #ffffff;
+      border: 2px solid #818cf8;
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .compare-card.hidden {
+      display: none;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .compare-slot {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .compare-slot-title {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #312e81;
+    }
+
+    .compare-slot-tags {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Bar -->
+    <header class="top-header">
+      <div class="header-main-row">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">🎬</div>
+          <div class="brand-text">
+            <h1>장르 조작단: 〈같은 대사, 다른 느낌〉 스튜디오</h1>
+            <p>글자는 그대로! 자막·소리·음악·화면 효과만으로 완전히 다른 분위기를 만들어 보세요.</p>
+          </div>
+        </div>
+
+        <div class="header-controls">
+          <div class="mission-select-wrap">
+            <label for="mission-select">🎯 미션 선택</label>
+            <select id="mission-select" class="mission-select">
+              <option value="free">✨ 자유 실험 모드</option>
+              <option value="horror">👻 미션 1: 등골 오싹 공포 영화</option>
+              <option value="docu">🥹 미션 2: 눈물 찔끔 감동 다큐</option>
+              <option value="comedy">🤣 미션 3: 배꼽 빠지는 병맛 예능</option>
+              <option value="romance">💖 미션 4: 두근두근 로맨스 드라마</option>
+            </select>
+          </div>
+          <button type="button" id="btn-open-topic-modal" class="btn-utility">👩‍🏫 주제 만들기</button>
+          <button type="button" id="btn-random" class="btn-utility">🎲 랜덤 믹스</button>
+          <button type="button" id="btn-reset" class="btn-utility">↺ 초기화</button>
+        </div>
+      </div>
+
+      <div class="header-sub-row">
+        <div class="teacher-presets">
+          <span class="preset-label">👩‍🏫 선생님 시범 예시:</span>
+          <button type="button" class="btn-demo" data-demo="horror">👻 공포 예시</button>
+          <button type="button" class="btn-demo" data-demo="docu">🥹 다큐 예시</button>
+          <button type="button" class="btn-demo" data-demo="comedy">🤣 예능 예시</button>
+          <button type="button" class="btn-demo" data-demo="romance">💖 로맨스 예시</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mission Banner -->
+    <div id="mission-banner" class="mission-banner is-free">
+      <span id="mission-banner-icon">✨</span>
+      <span id="mission-banner-text">자유 실험 모드: 아래 4가지 요소를 마음껏 조합해서 나만의 장면을 연출해 보세요!</span>
+    </div>
+
+    <!-- 16:9 Stage Monitor -->
+    <section class="stage-bezel" aria-label="미리보기 무대">
+      <div class="stage-topbar">
+        <div class="scene-pills" role="group" aria-label="등장 장면 선택">
+          <button type="button" class="scene-pill active" data-scene="student">🧑 교실 학생</button>
+          <button type="button" class="scene-pill" data-scene="cat">🐱 무표정 고양이</button>
+          <button type="button" class="scene-pill" data-scene="curry">🍛 급식판</button>
+          <button type="button" id="btn-upload-image" class="upload-pill-btn">🖼️ 사진 올리기</button>
+          <button type="button" id="btn-upload-video" class="upload-pill-btn">🎥 영상 올리기</button>
+          <input type="file" id="image-upload-input" accept="image/*" hidden />
+          <input type="file" id="video-upload-input" accept="video/*" hidden />
+        </div>
+        <div id="monitor-status" class="monitor-status">
+          <button type="button" id="btn-spoiler-toggle" class="spoiler-toggle-btn" title="퀴즈용으로 방송국 뱃지를 숨깁니다">🕵️ 뱃지 숨기기</button>
+          <span class="status-dot"></span>
+          <span id="monitor-status-text">대기 중</span>
+        </div>
+      </div>
+
+      <div id="stage-viewport" class="stage-viewport">
+        <div id="stage-camera-layer" class="stage-camera-layer">
+          <!-- Neutral SVG Illustration rendered by JS -->
+          <svg
+            id="stage-scene-svg"
+            class="stage-scene-svg"
+            viewBox="0 0 800 450"
+            preserveAspectRatio="xMidYMid slice"
+            aria-label="중립적인 장면 일러스트"
+          ></svg>
+          <img id="stage-custom-img" class="stage-media-el hidden" alt="업로드된 사진 장면" />
+          <video id="stage-custom-video" class="stage-media-el hidden" playsinline loop></video>
+        </div>
+
+        <div class="vignette-overlay"></div>
+        <div class="romance-overlay"></div>
+        <div id="particle-layer" class="particle-layer" aria-hidden="true"></div>
+        <div id="sticker-layer" class="sticker-layer" aria-label="소품 스티커"></div>
+        <div class="letterbox-bar letterbox-top"></div>
+        <div class="letterbox-bar letterbox-bottom"></div>
+
+        <div id="watermark-badge" class="watermark-badge">STUDIO</div>
+
+        <div class="subtitle-container">
+          <div id="subtitle-text" class="subtitle-text sub-basic">어, 너 여기 있었네?</div>
+        </div>
+      </div>
+
+      <!-- Sticker Palette Toolbar -->
+      <div class="sticker-toolbar">
+        <span class="sticker-toolbar-label">🎨 스티커 (터치/드래그 · 선택 후 크기조절/삭제):</span>
+        <button type="button" class="sticker-add-btn" data-sticker="🕶️">🕶️ 선글라스</button>
+        <button type="button" class="sticker-add-btn" data-sticker="💧">💧 눈물</button>
+        <button type="button" class="sticker-add-btn" data-sticker="💦">💦 식은땀</button>
+        <button type="button" class="sticker-add-btn" data-sticker="💢">💢 화남</button>
+        <button type="button" class="sticker-add-btn" data-sticker="❓">❓ 물음표</button>
+        <button type="button" class="sticker-add-btn" data-sticker="⚡">⚡ 번쩍</button>
+        <button type="button" class="sticker-add-btn" data-sticker="😳">😳 볼터치</button>
+        <div id="sticker-edit-controls" class="sticker-edit-controls is-disabled">
+          <button type="button" id="btn-sticker-smaller" class="sticker-add-btn">➖ 작게</button>
+          <button type="button" id="btn-sticker-bigger" class="sticker-add-btn">➕ 크게</button>
+          <button type="button" id="btn-sticker-delete" class="sticker-add-btn" style="background:#991b1b;border-color:#ef4444;">✕ 선택 삭제</button>
+        </div>
+        <button type="button" id="btn-clear-stickers" class="sticker-add-btn">🗑️ 전체 비우기</button>
+      </div>
+    </section>
+
+    <!-- Dialogue & Playback Bar -->
+    <section class="control-bar-card">
+      <div class="dialogue-row">
+        <div class="section-mini-title">💬 대사 고르기 (직접 써볼 수도 있어요!)</div>
+        <div class="dialogue-chips" id="dialogue-chips">
+          <button type="button" class="dialogue-chip active" data-line="어, 너 여기 있었네?">"어, 너 여기 있었네?"</button>
+          <button type="button" class="dialogue-chip" data-line="오늘 급식은 카레다.">"오늘 급식은 카레다."</button>
+          <button type="button" class="dialogue-chip" data-line="잠깐 나 좀 보자.">"잠깐 나 좀 보자."</button>
+          <button type="button" class="dialogue-chip" data-line="이거 네가 한 거야?">"이거 네가 한 거야?"</button>
+        </div>
+        <div class="dialogue-input-wrap">
+          <input
+            type="text"
+            id="dialogue-input"
+            class="dialogue-input"
+            maxlength="45"
+            value="어, 너 여기 있었네?"
+            placeholder="직접 대사를 입력해 보세요 (최대 45자)"
+            aria-label="대사 직접 입력"
+          />
+          <span id="char-counter" class="char-counter">12 / 45자</span>
+        </div>
+
+        <div class="twist-box">
+          <label class="switch-label" for="twist-enabled">
+            <input type="checkbox" id="twist-enabled" />
+            <span>⚡ 반전 컷 모드 (앞부분 → 뒷부분 분위기 급반전!)</span>
+          </label>
+          <div id="twist-controls" class="twist-controls" style="opacity:0.5;pointer-events:none;">
+            <span style="font-size:0.82rem;font-weight:700;color:#9a3412;">뒷부분 반전 장르:</span>
+            <select id="twist-genre-select" class="twist-select">
+              <option value="horror">🩸 공포 급반전</option>
+              <option value="comedy">🤣 병맛 예능 반전</option>
+              <option value="docu">🥹 감동 다큐 반전</option>
+              <option value="romance">💖 로맨스 반전</option>
+            </select>
+            <span style="font-size:0.76rem;color:#9a3412;">(팁: `/`로 앞뒤를 직접 나눌 수도 있어요)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="playback-row">
+        <button type="button" id="btn-play-genre" class="btn-play-main">▶ 재생하기 (장르 적용)</button>
+        <button type="button" id="btn-play-original" class="btn-play-original">😐 원본(무편집)으로 보기</button>
+        <button type="button" id="btn-toggle-compare" class="btn-utility">🆚 A vs B 비교</button>
+        <button type="button" id="btn-record-video" class="btn-record">📥 영상 저장 (패들렛용)</button>
+        <button type="button" id="btn-export-image" class="btn-utility">🖼️ 이미지 저장</button>
+        <button type="button" id="btn-stop" class="btn-stop" disabled>■ 정지</button>
+        <div id="playback-live-badge" class="playback-live-badge">준비 완료! 재생 버튼을 눌러보세요</div>
+      </div>
+      <div class="record-tip" id="record-tip">
+        💡 <strong>영상 저장 주의사항:</strong> <strong>배경음악(BGM)·효과음·[🎙️ 내 목소리 녹음]</strong>은 영상 파일에 함께 저장되지만, <strong>AI 목소리(TTS)</strong>는 브라우저 보안상 영상 파일에 들어가지 않습니다. <u>목소리까지 패들렛에 올리려면 [🎙️ 내 목소리 녹음] 탭을 이용해 주세요!</u>
+      </div>
+    </section>
+
+    <!-- A vs B Comparison Panel -->
+    <section id="compare-card" class="compare-card hidden">
+      <div class="reflection-header">
+        <h2 class="reflection-title" style="color:#312e81;">🆚 A vs B 장르 대결 비교하기</h2>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" id="btn-save-slot-b" class="btn-xs">📌 현재 설정을 [B]에 저장</button>
+          <button type="button" id="btn-play-ab-sequence" class="btn-primary-sm" style="padding:6px 12px;font-size:0.82rem;">🔄 A → B 연속 비교 재생</button>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-slot">
+          <div class="compare-slot-title">🅰️ 버전 A (현재 편집 중인 설정)</div>
+          <div id="compare-a-tags" class="compare-slot-tags"></div>
+          <button type="button" id="btn-play-slot-a" class="btn-mini-preview">▶ A만 재생하기</button>
+        </div>
+        <div class="compare-slot">
+          <div class="compare-slot-title">🅱️ 버전 B (비교 대상)</div>
+          <div id="compare-b-tags" class="compare-slot-tags">기본: 원본(무편집) 상태</div>
+          <button type="button" id="btn-play-slot-b" class="btn-mini-preview">▶ B만 재생하기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Post-Playback Reflection Card -->
+    <section id="reflection-card" class="reflection-card hidden" aria-live="polite">
+      <div class="reflection-header">
+        <h2 class="reflection-title">💡 생각 나누기: 방금 본 장면, 어떤 느낌이었나요?</h2>
+      </div>
+      <div id="reflection-summary" class="reflection-summary"></div>
+      <p class="reflection-prompt">
+        말(텍스트)은 한 글자도 바뀌지 않았는데, 어떤 분위기로 느껴졌나요? 가장 큰 역할을 한 요소는 무엇인지 친구들과 이야기해 보세요!
+      </p>
+    </section>
+
+    <!-- 4-Card Manipulation Panel -->
+    <section class="panel-grid" aria-label="장르 연출 조절판">
+      <!-- Card 1: Subtitle Style -->
+      <article class="studio-card">
+        <div class="card-header">
+          <h2 class="card-title">1. 💬 자막 스타일</h2>
+          <span class="card-badge">키네틱 타이포</span>
+        </div>
+        <div class="option-grid" id="subtitle-options">
+          <button type="button" class="option-btn active" data-sub="basic">기본 (고딕)</button>
+          <button type="button" class="option-btn" data-sub="horror">🩸 공포 (빨강+떨림)</button>
+          <button type="button" class="option-btn" data-sub="comedy">⚡ 예능 (노랑+통통)</button>
+          <button type="button" class="option-btn" data-sub="docu">✒️ 다큐 (타자기)</button>
+          <button type="button" class="option-btn" data-sub="romance">💗 로맨스 (핑크빛)</button>
+          <button type="button" class="option-btn" data-sub="news">📺 뉴스 속보</button>
+          <button type="button" class="option-btn" data-sub="shorts">📱 숏츠/릴스</button>
+        </div>
+        <p class="filter-hint">자막의 글씨체, 색깔, 움직임만 바뀌어도 말투가 달라 보여요.</p>
+      </article>
+
+      <!-- Card 2: BGM & SFX -->
+      <article class="studio-card">
+        <div class="card-header">
+          <h2 class="card-title">2. 🎵 BGM &amp; 효과음</h2>
+          <span class="card-badge">실시간 신시사이저</span>
+        </div>
+
+        <div>
+          <div class="sub-group-label"><span>배경음악 (BGM)</span></div>
+          <div class="option-grid" id="bgm-options">
+            <button type="button" class="option-btn active" data-bgm="none">없음</button>
+            <button type="button" class="option-btn" data-bgm="horror">🎻 공포</button>
+            <button type="button" class="option-btn" data-bgm="docu">🎹 감동</button>
+            <button type="button" class="option-btn" data-bgm="comedy">🎺 예능</button>
+            <button type="button" class="option-btn" data-bgm="romance">🔔 로맨스</button>
+            <button type="button" class="option-btn" data-bgm="news">📺 뉴스 속보</button>
+            <button type="button" class="option-btn" data-bgm="shorts">📱 숏츠 비트</button>
+            <button type="button" class="option-btn" data-bgm="custom">📂 내 음악</button>
+          </div>
+          <div class="custom-audio-box">
+            <span id="custom-audio-name" class="custom-audio-name">선택된 음악 파일 없음 (mp3, wav 등)</span>
+            <button type="button" id="btn-upload-audio" class="btn-mini-preview">🎵 음악 파일 올리기</button>
+            <input type="file" id="audio-upload-input" accept="audio/*" hidden />
+            <audio id="custom-audio-el" loop hidden></audio>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-group-label">
+            <span>포인트 효과음 (시작할 때 재생)</span>
+            <button type="button" id="btn-preview-sfx" class="btn-mini-preview">🔊 미리듣기</button>
+          </div>
+          <div class="option-grid" id="sfx-options">
+            <button type="button" class="option-btn active" data-sfx="none">없음</button>
+            <button type="button" class="option-btn" data-sfx="boing">🤪 띠용~</button>
+            <button type="button" class="option-btn" data-sfx="dudung">🥁 두둥!</button>
+            <button type="button" class="option-btn" data-sfx="stinger">😱 공포 스팅어</button>
+            <button type="button" class="option-btn" data-sfx="fanfare">🎉 짠~ 팡파레</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3: TTS & Voice Recorder -->
+      <article class="studio-card">
+        <div class="card-header">
+          <h2 class="card-title">3. 🗣️ 음성 (AI / 내 목소리)</h2>
+          <span class="card-badge">음성 변조</span>
+        </div>
+
+        <div class="voice-mode-tabs">
+          <button type="button" id="tab-voice-tts" class="voice-tab-btn active">🤖 AI 목소리(TTS)</button>
+          <button type="button" id="tab-voice-mic" class="voice-tab-btn">🎙️ 내 목소리 녹음</button>
+        </div>
+
+        <div id="voice-panel-tts" class="voice-panel">
+          <div class="tts-toggle-row" style="margin-bottom:10px;">
+            <label class="switch-label" for="tts-enabled">
+              <input type="checkbox" id="tts-enabled" checked />
+              <span>목소리 읽어주기 켜기</span>
+            </label>
+            <span id="tts-notice" class="tts-notice"></span>
+          </div>
+
+          <div id="tts-sliders-wrap" class="slider-wrap" style="display:flex;flex-direction:column;gap:12px;">
+            <div class="slider-block">
+              <div class="slider-top">
+                <label for="tts-rate">말하는 속도</label>
+                <span id="tts-rate-val" class="slider-value">1.0x</span>
+              </div>
+              <input type="range" id="tts-rate" class="slider-input" min="0.5" max="1.8" step="0.1" value="1.0" />
+              <div class="slider-ends">
+                <span>🐢 느리게 (0.5x)</span>
+                <span>보통 (1.0x)</span>
+                <span>🐇 빠르게 (1.8x)</span>
+              </div>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-top">
+                <label for="tts-pitch">목소리 톤 (높낮이)</label>
+                <span id="tts-pitch-val" class="slider-value">1.0</span>
+              </div>
+              <input type="range" id="tts-pitch" class="slider-input" min="0.5" max="1.8" step="0.1" value="1.0" />
+              <div class="slider-ends">
+                <span>👹 낮고 음산 (0.5)</span>
+                <span>보통 (1.0)</span>
+                <span>🐥 높고 발랄 (1.8)</span>
+              </div>
+            </div>
+          </div>
+          <p class="filter-hint" style="margin-top:10px;color:#b45309;font-weight:700;">
+            ⚠️ AI 목소리(TTS)는 화면 재생 전용입니다. 영상 파일에 목소리를 넣으려면 위 [🎙️ 내 목소리 녹음] 탭을 이용하세요!
+          </p>
+        </div>
+
+        <div id="voice-panel-mic" class="voice-panel hidden">
+          <div class="mic-record-box">
+            <div class="mic-btn-row">
+              <button type="button" id="btn-mic-record" class="btn-mic">🔴 내 목소리 녹음하기</button>
+              <button type="button" id="btn-mic-preview" class="btn-mini-preview" disabled>🔊 변조 미리듣기</button>
+            </div>
+            <div id="mic-status-text" style="font-size:0.82rem;font-weight:700;color:#7f1d1d;">녹음 버튼을 누르고 대사를 말해보세요!</div>
+          </div>
+          <div style="margin-top:10px;">
+            <div class="sub-group-label"><span>목소리 변조 효과</span></div>
+            <div class="option-grid" id="mic-fx-options">
+              <button type="button" class="option-btn active" data-micfx="normal">🙂 원래 목소리</button>
+              <button type="button" class="option-btn" data-micfx="helium">🎈 헬륨가스 (높게)</button>
+              <button type="button" class="option-btn" data-micfx="monster">👹 괴물·악마 (낮게)</button>
+              <button type="button" class="option-btn" data-micfx="echo">📢 방송국 에코</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4: Visual Filters & Effects -->
+      <article class="studio-card">
+        <div class="card-header">
+          <h2 class="card-title">4. 🎬 화면 필터 &amp; 연출</h2>
+          <span class="card-badge">중복 선택 가능</span>
+        </div>
+
+        <div class="option-grid" id="filter-options">
+          <button type="button" class="option-btn active" data-filter="none">없음</button>
+          <button type="button" class="option-btn" data-filter="grayscale-vignette">🖤 흑백+비네팅</button>
+          <button type="button" class="option-btn" data-filter="zoom">🔍 서서히 줌인</button>
+          <button type="button" class="option-btn" data-filter="romance">✨ 핑크+반짝이</button>
+          <button type="button" class="option-btn" data-filter="shake">💥 화면 흔들림</button>
+          <button type="button" class="option-btn" data-filter="cinema">🎞️ 다큐 시네마바</button>
+        </div>
+        <p class="filter-hint">여러 효과를 동시에 겹쳐서 더 강렬한 장면을 만들 수도 있어요!</p>
+      </article>
+    </section>
+  </div>
+
+  <!-- Teacher Topic Builder Modal -->
+  <div id="topic-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="topic-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="topic-modal-title" class="modal-title">👩‍🏫 선생님 주제(미션) 만들기</h2>
+        <button type="button" id="btn-close-topic-modal" class="modal-close" aria-label="닫기">✕</button>
+      </div>
+
+      <div class="form-field">
+        <label for="topic-title-input">주제 제목</label>
+        <input type="text" id="topic-title-input" maxlength="40" placeholder="예: 미션 5: 긴급 뉴스 속보처럼 만들기" />
+      </div>
+
+      <div class="form-field">
+        <label for="topic-goal-input">학생들에게 줄 미션 설명</label>
+        <textarea id="topic-goal-input" rows="2" maxlength="120" placeholder="예: 평범한 급식 이야기를 엄청난 특종 뉴스처럼 꾸며보세요!"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="topic-line-input">추천 기본 대사 (선택 사항)</label>
+        <input type="text" id="topic-line-input" maxlength="45" placeholder="예: 오늘 급식은 카레다." />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="btn-save-topic" class="btn-primary-sm">💾 미션 목록에 추가</button>
+      </div>
+
+      <div id="custom-missions-section" class="custom-missions-list hidden">
+        <div class="section-mini-title">📌 내가 만든 주제 목록 (링크로 학생들에게 공유 가능!)</div>
+        <div id="custom-missions-items"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* =========================================================
+       * 1. App State & Constants
+       * ========================================================= */
+      const MISSIONS = {
+        free: {
+          icon: '✨',
+          text: '자유 실험 모드: 아래 4가지 요소를 마음껏 조합해서 나만의 장면을 연출해 보세요!'
+        },
+        horror: {
+          icon: '👻',
+          text: '미션 1 목표: 평범한 대사를 등골이 오싹해지는 공포 영화의 한 장면처럼 꾸며보세요!'
+        },
+        docu: {
+          icon: '🥹',
+          text: '미션 2 목표: 평범한 대사를 눈물이 찔끔 나는 감동 다큐멘터리처럼 만들어 보세요!'
+        },
+        comedy: {
+          icon: '🤣',
+          text: '미션 3 목표: 평범한 대사를 배꼽 빠지게 웃긴 병맛 예능 장면으로 바꿔보세요!'
+        },
+        romance: {
+          icon: '💖',
+          text: '미션 4 목표: 평범한 대사를 심장이 두근거리는 로맨스 드라마처럼 연출해 보세요!'
+        }
+      };
+
+      const DEMO_PRESETS = {
+        horror: {
+          scene: 'student',
+          line: '어, 너 여기 있었네?',
+          subtitle: 'horror',
+          bgm: 'horror',
+          sfx: 'stinger',
+          ttsEnabled: true,
+          ttsRate: 0.6,
+          ttsPitch: 0.5,
+          filters: ['grayscale-vignette', 'zoom']
+        },
+        docu: {
+          scene: 'curry',
+          line: '오늘 급식은 카레다.',
+          subtitle: 'docu',
+          bgm: 'docu',
+          sfx: 'dudung',
+          ttsEnabled: true,
+          ttsRate: 0.8,
+          ttsPitch: 0.9,
+          filters: ['cinema', 'zoom']
+        },
+        comedy: {
+          scene: 'cat',
+          line: '잠깐 나 좀 보자.',
+          subtitle: 'comedy',
+          bgm: 'comedy',
+          sfx: 'boing',
+          ttsEnabled: true,
+          ttsRate: 1.4,
+          ttsPitch: 1.6,
+          filters: ['shake']
+        },
+        romance: {
+          scene: 'student',
+          line: '이거 네가 한 거야?',
+          subtitle: 'romance',
+          bgm: 'romance',
+          sfx: 'fanfare',
+          ttsEnabled: true,
+          ttsRate: 0.9,
+          ttsPitch: 1.2,
+          filters: ['romance', 'zoom']
+        }
+      };
+
+      const LABELS = {
+        subtitle: {
+          basic: '기본 자막',
+          horror: '공포 자막(빨강+떨림)',
+          comedy: '예능 자막(노랑+통통)',
+          docu: '다큐 자막(타자기)',
+          romance: '로맨스 자막(핑크빛)',
+          news: '뉴스 속보 자막',
+          shorts: '숏츠/릴스 자막'
+        },
+        bgm: {
+          none: 'BGM 없음',
+          horror: '공포 BGM',
+          docu: '감동 BGM',
+          comedy: '예능 BGM',
+          romance: '로맨스 BGM',
+          news: '뉴스 속보 BGM',
+          shorts: '숏츠 비트 BGM',
+          custom: '내 음악 파일'
+        },
+        sfx: {
+          none: '효과음 없음',
+          boing: '띠용~ 효과음',
+          dudung: '두둥! 효과음',
+          stinger: '공포 스팅어',
+          fanfare: '짠~ 팡파레'
+        },
+        filters: {
+          'grayscale-vignette': '흑백+비네팅',
+          zoom: '서서히 줌인',
+          romance: '핑크+반짝이',
+          shake: '화면 흔들림',
+          cinema: '다큐 시네마바'
+        }
+      };
+
+      const state = {
+        mission: 'free',
+        scene: 'student', // 'student' | 'cat' | 'curry' | 'custom-image' | 'custom-video'
+        customImageUrl: null,
+        customVideoUrl: null,
+        customAudioUrl: null,
+        customAudioName: '',
+        line: '어, 너 여기 있었네?',
+        subtitle: 'basic',
+        bgm: 'none',
+        sfx: 'none',
+        ttsEnabled: true,
+        ttsRate: 1.0,
+        ttsPitch: 1.0,
+        voiceMode: 'tts', // 'tts' | 'mic'
+        micFx: 'normal', // 'normal' | 'helium' | 'monster' | 'echo'
+        micAudioBuffer: null,
+        isMicRecording: false,
+        hideSpoiler: false,
+        stickers: [],
+        selectedStickerId: null,
+        twistEnabled: false,
+        twistGenre: 'horror',
+        compareOpen: false,
+        slotB: null,
+        filters: [],
+        isPlaying: false,
+        playingOriginal: false,
+        isRecording: false
+      };
+
+      /* =========================================================
+       * 2. DOM References
+       * ========================================================= */
+      const els = {
+        missionSelect: document.getElementById('mission-select'),
+        missionBanner: document.getElementById('mission-banner'),
+        missionBannerIcon: document.getElementById('mission-banner-icon'),
+        missionBannerText: document.getElementById('mission-banner-text'),
+        btnRandom: document.getElementById('btn-random'),
+        btnReset: document.getElementById('btn-reset'),
+        btnOpenTopicModal: document.getElementById('btn-open-topic-modal'),
+        topicModal: document.getElementById('topic-modal'),
+        btnCloseTopicModal: document.getElementById('btn-close-topic-modal'),
+        topicTitleInput: document.getElementById('topic-title-input'),
+        topicGoalInput: document.getElementById('topic-goal-input'),
+        topicLineInput: document.getElementById('topic-line-input'),
+        btnSaveTopic: document.getElementById('btn-save-topic'),
+        customMissionsSection: document.getElementById('custom-missions-section'),
+        customMissionsItems: document.getElementById('custom-missions-items'),
+        demoButtons: document.querySelectorAll('.btn-demo'),
+        scenePills: document.querySelectorAll('.scene-pill'),
+        btnUploadImage: document.getElementById('btn-upload-image'),
+        btnUploadVideo: document.getElementById('btn-upload-video'),
+        imageUploadInput: document.getElementById('image-upload-input'),
+        videoUploadInput: document.getElementById('video-upload-input'),
+        stageSceneSvg: document.getElementById('stage-scene-svg'),
+        stageCustomImg: document.getElementById('stage-custom-img'),
+        stageCustomVideo: document.getElementById('stage-custom-video'),
+        stageViewport: document.getElementById('stage-viewport'),
+        particleLayer: document.getElementById('particle-layer'),
+        stickerLayer: document.getElementById('sticker-layer'),
+        btnSpoilerToggle: document.getElementById('btn-spoiler-toggle'),
+        stickerAddButtons: document.querySelectorAll('.sticker-add-btn[data-sticker]'),
+        stickerEditControls: document.getElementById('sticker-edit-controls'),
+        btnStickerSmaller: document.getElementById('btn-sticker-smaller'),
+        btnStickerBigger: document.getElementById('btn-sticker-bigger'),
+        btnStickerDelete: document.getElementById('btn-sticker-delete'),
+        btnClearStickers: document.getElementById('btn-clear-stickers'),
+        watermarkBadge: document.getElementById('watermark-badge'),
+        subtitleText: document.getElementById('subtitle-text'),
+        monitorStatus: document.getElementById('monitor-status'),
+        monitorStatusText: document.getElementById('monitor-status-text'),
+        dialogueChips: document.querySelectorAll('.dialogue-chip'),
+        dialogueInput: document.getElementById('dialogue-input'),
+        charCounter: document.getElementById('char-counter'),
+        twistEnabled: document.getElementById('twist-enabled'),
+        twistControls: document.getElementById('twist-controls'),
+        twistGenreSelect: document.getElementById('twist-genre-select'),
+        btnPlayGenre: document.getElementById('btn-play-genre'),
+        btnPlayOriginal: document.getElementById('btn-play-original'),
+        btnToggleCompare: document.getElementById('btn-toggle-compare'),
+        compareCard: document.getElementById('compare-card'),
+        btnSaveSlotB: document.getElementById('btn-save-slot-b'),
+        btnPlayAbSequence: document.getElementById('btn-play-ab-sequence'),
+        btnPlaySlotA: document.getElementById('btn-play-slot-a'),
+        btnPlaySlotB: document.getElementById('btn-play-slot-b'),
+        compareATags: document.getElementById('compare-a-tags'),
+        compareBTags: document.getElementById('compare-b-tags'),
+        btnRecordVideo: document.getElementById('btn-record-video'),
+        btnExportImage: document.getElementById('btn-export-image'),
+        btnStop: document.getElementById('btn-stop'),
+        playbackLiveBadge: document.getElementById('playback-live-badge'),
+        reflectionCard: document.getElementById('reflection-card'),
+        reflectionSummary: document.getElementById('reflection-summary'),
+        subtitleButtons: document.querySelectorAll('#subtitle-options .option-btn'),
+        bgmButtons: document.querySelectorAll('#bgm-options .option-btn'),
+        btnUploadAudio: document.getElementById('btn-upload-audio'),
+        audioUploadInput: document.getElementById('audio-upload-input'),
+        customAudioName: document.getElementById('custom-audio-name'),
+        customAudioEl: document.getElementById('custom-audio-el'),
+        sfxButtons: document.querySelectorAll('#sfx-options .option-btn'),
+        btnPreviewSfx: document.getElementById('btn-preview-sfx'),
+        tabVoiceTts: document.getElementById('tab-voice-tts'),
+        tabVoiceMic: document.getElementById('tab-voice-mic'),
+        voicePanelTts: document.getElementById('voice-panel-tts'),
+        voicePanelMic: document.getElementById('voice-panel-mic'),
+        btnMicRecord: document.getElementById('btn-mic-record'),
+        btnMicPreview: document.getElementById('btn-mic-preview'),
+        micStatusText: document.getElementById('mic-status-text'),
+        micFxButtons: document.querySelectorAll('#mic-fx-options .option-btn'),
+        ttsEnabled: document.getElementById('tts-enabled'),
+        ttsNotice: document.getElementById('tts-notice'),
+        ttsSlidersWrap: document.getElementById('tts-sliders-wrap'),
+        ttsRate: document.getElementById('tts-rate'),
+        ttsRateVal: document.getElementById('tts-rate-val'),
+        ttsPitch: document.getElementById('tts-pitch'),
+        ttsPitchVal: document.getElementById('tts-pitch-val'),
+        filterButtons: document.querySelectorAll('#filter-options .option-btn')
+      };
+
+      /* =========================================================
+       * 3. Neutral Deadpan Inline SVG Scenes
+       * ========================================================= */
+      function getSceneMarkup(sceneType) {
+        if (sceneType === 'cat') {
+          return `
+            <defs>
+              <linearGradient id="catBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#dbeafe" />
+                <stop offset="68%" stop-color="#e2e8f0" />
+                <stop offset="100%" stop-color="#cbd5e1" />
+              </linearGradient>
+            </defs>
+            <rect width="800" height="450" fill="url(#catBg)" />
+            <rect x="0" y="315" width="800" height="135" fill="#d6c7b2" />
+            <rect x="70" y="45" width="210" height="180" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="6" />
+            <line x1="175" y1="45" x2="175" y2="225" stroke="#94a3b8" stroke-width="5" />
+            <line x1="70" y1="135" x2="280" y2="135" stroke="#94a3b8" stroke-width="5" />
+            <g transform="translate(400, 235)">
+              <path d="M-70,130 C-75,45 -50,15 0,15 C50,15 75,45 70,130 Z" fill="#94a3b8" stroke="#334155" stroke-width="4" />
+              <path d="M55,110 C115,105 130,55 110,45" fill="none" stroke="#64748b" stroke-width="16" stroke-linecap="round" />
+              <polygon points="-75,-45 -85,-115 -22,-80" fill="#94a3b8" stroke="#334155" stroke-width="4" stroke-linejoin="round" />
+              <polygon points="75,-45 85,-115 22,-80" fill="#94a3b8" stroke="#334155" stroke-width="4" stroke-linejoin="round" />
+              <polygon points="-66,-52 -72,-96 -34,-74" fill="#fbcfe8" />
+              <polygon points="66,-52 72,-96 34,-74" fill="#fbcfe8" />
+              <ellipse cx="0" cy="-22" rx="88" ry="74" fill="#cbd5e1" stroke="#334155" stroke-width="4" />
+              <line x1="-12" y1="-94" x2="-12" y2="-70" stroke="#64748b" stroke-width="5" stroke-linecap="round" />
+              <line x1="0" y1="-96" x2="0" y2="-68" stroke="#64748b" stroke-width="5" stroke-linecap="round" />
+              <line x1="12" y1="-94" x2="12" y2="-70" stroke="#64748b" stroke-width="5" stroke-linecap="round" />
+              <!-- Deadpan blank stare -->
+              <circle cx="-34" cy="-28" r="11" fill="#ffffff" stroke="#1e293b" stroke-width="3" />
+              <circle cx="34" cy="-28" r="11" fill="#ffffff" stroke="#1e293b" stroke-width="3" />
+              <circle cx="-34" cy="-28" r="4.5" fill="#0f172a" />
+              <circle cx="34" cy="-28" r="4.5" fill="#0f172a" />
+              <line x1="-47" y1="-44" x2="-22" y2="-44" stroke="#334155" stroke-width="3.5" stroke-linecap="round" />
+              <line x1="22" y1="-44" x2="47" y2="-44" stroke="#334155" stroke-width="3.5" stroke-linecap="round" />
+              <polygon points="0,-10 -7,-17 7,-17" fill="#f472b6" />
+              <line x1="-12" y1="0" x2="12" y2="0" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" />
+              <line x1="-95" y1="-12" x2="-52" y2="-10" stroke="#475569" stroke-width="2.5" />
+              <line x1="-96" y1="-2" x2="-52" y2="-4" stroke="#475569" stroke-width="2.5" />
+              <line x1="52" y1="-10" x2="95" y2="-12" stroke="#475569" stroke-width="2.5" />
+              <line x1="52" y1="-4" x2="96" y2="-2" stroke="#475569" stroke-width="2.5" />
+            </g>
+          `;
+        }
+
+        if (sceneType === 'curry') {
+          return `
+            <defs>
+              <linearGradient id="cafeteriaBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f1f5f9" />
+                <stop offset="100%" stop-color="#cbd5e1" />
+              </linearGradient>
+            </defs>
+            <rect width="800" height="450" fill="url(#cafeteriaBg)" />
+            <rect x="0" y="290" width="800" height="160" fill="#e2d5c3" />
+            <line x1="0" y1="290" x2="800" y2="290" stroke="#b6a48e" stroke-width="4" />
+            <!-- Stainless Steel Lunch Tray -->
+            <g transform="translate(400, 235)">
+              <rect x="-215" y="-120" width="430" height="240" rx="22" fill="#cbd5e1" stroke="#475569" stroke-width="5" />
+              <rect x="-203" y="-108" width="406" height="216" rx="16" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <!-- Top 3 compartments -->
+              <rect x="-188" y="-94" width="118" height="78" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3" />
+              <rect x="-59" y="-94" width="118" height="78" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3" />
+              <rect x="70" y="-94" width="118" height="78" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3" />
+              <!-- Kimchi -->
+              <ellipse cx="-129" cy="-55" rx="34" ry="20" fill="#ef4444" opacity="0.88" />
+              <ellipse cx="-125" cy="-58" rx="24" ry="11" fill="#f87171" />
+              <!-- Pickled radish -->
+              <circle cx="-12" cy="-58" r="14" fill="#fde047" stroke="#eab308" stroke-width="2" />
+              <circle cx="8" cy="-50" r="14" fill="#fef08a" stroke="#eab308" stroke-width="2" />
+              <!-- Broccoli / Greens -->
+              <circle cx="120" cy="-56" r="16" fill="#22c55e" />
+              <circle cx="138" cy="-50" r="14" fill="#16a34a" />
+              <circle cx="128" cy="-64" r="13" fill="#4ade80" />
+              <!-- Bottom Rice + Curry Compartment -->
+              <rect x="-188" y="-2" width="235" height="96" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="3" />
+              <!-- White Rice -->
+              <ellipse cx="-124" cy="46" rx="52" ry="34" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+              <!-- Curry Sauce -->
+              <path d="M-82,18 C-40,5 30,12 36,48 C40,78 -25,88 -76,78 C-98,74 -102,32 -82,18 Z" fill="#d97706" />
+              <ellipse cx="-34" cy="40" rx="12" ry="8" fill="#fb923c" />
+              <rect x="-14" y="52" width="14" height="12" rx="3" fill="#fde68a" />
+              <rect x="-56" y="54" width="12" height="10" rx="3" fill="#fef3c7" />
+              <!-- Soup bowl compartment -->
+              <rect x="62" y="-2" width="126" height="96" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3" />
+              <circle cx="125" cy="46" r="36" fill="#fef3c7" stroke="#f59e0b" stroke-width="3" />
+              <!-- Spoon -->
+              <rect x="230" y="-60" width="12" height="120" rx="6" fill="#94a3b8" stroke="#475569" stroke-width="2" />
+              <ellipse cx="236" cy="-70" rx="18" ry="26" fill="#cbd5e1" stroke="#475569" stroke-width="2" />
+            </g>
+          `;
+        }
+
+        // Default: neutral classroom student
+        return `
+          <defs>
+            <linearGradient id="hallBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e2e8f0" />
+              <stop offset="100%" stop-color="#cbd5e1" />
+            </linearGradient>
+          </defs>
+          <rect width="800" height="450" fill="url(#hallBg)" />
+          <!-- Classroom chalkboard / hallway door -->
+          <rect x="55" y="45" width="230" height="145" rx="6" fill="#334155" stroke="#94a3b8" stroke-width="8" />
+          <rect x="530" y="50" width="185" height="270" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="5" />
+          <rect x="555" y="75" width="135" height="95" fill="#dbeafe" stroke="#94a3b8" stroke-width="3" />
+          <circle cx="552" cy="195" r="7" fill="#64748b" />
+          <rect x="0" y="320" width="800" height="130" fill="#d6d3d1" />
+          <line x1="0" y1="320" x2="800" y2="320" stroke="#94a3b8" stroke-width="3" />
+          <!-- Neutral deadpan student -->
+          <g transform="translate(400, 220)">
+            <!-- Shoulders / hoodie -->
+            <path d="M-112,230 C-112,115 -68,78 0,78 C68,78 112,115 112,230 Z" fill="#64748b" stroke="#1e293b" stroke-width="4" />
+            <path d="M-38,78 L0,104 L38,78" fill="#e2e8f0" stroke="#1e293b" stroke-width="3" />
+            <!-- Neck & Head -->
+            <rect x="-22" y="42" width="44" height="44" rx="12" fill="#fde6d2" stroke="#1e293b" stroke-width="3.5" />
+            <circle cx="-74" cy="2" r="14" fill="#fde6d2" stroke="#1e293b" stroke-width="3.5" />
+            <circle cx="74" cy="2" r="14" fill="#fde6d2" stroke="#1e293b" stroke-width="3.5" />
+            <ellipse cx="0" cy="-10" rx="74" ry="80" fill="#fde6d2" stroke="#1e293b" stroke-width="4" />
+            <!-- Neutral hair -->
+            <path d="M-76,-12 C-78,-78 -38,-102 0,-102 C38,-102 78,-78 76,-12 C62,-38 38,-50 18,-48 C2,-46 -12,-34 -30,-48 C-48,-52 -64,-36 -76,-12 Z" fill="#1e293b" />
+            <!-- Completely neutral deadpan eyes and straight mouth -->
+            <line x1="-42" y1="-22" x2="-18" y2="-22" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+            <line x1="18" y1="-22" x2="42" y2="-22" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+            <circle cx="-30" cy="-2" r="6" fill="#0f172a" />
+            <circle cx="30" cy="-2" r="6" fill="#0f172a" />
+            <path d="M0,4 L-4,17 L4,17" fill="none" stroke="#c28e70" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <line x1="-18" y1="34" x2="18" y2="34" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+          </g>
+        `;
+      }
+
+      /* =========================================================
+       * 4. Web Audio API Synthesizer (BGM + SFX)
+       * ========================================================= */
+      const AudioEngine = {
+        ctx: null,
+        masterGain: null,
+        bgmGain: null,
+        recordDest: null,
+        mediaSources: new WeakMap(),
+        connectedMediaEls: new Set(),
+        activeNodes: new Set(),
+        activeTimers: new Set(),
+
+        ensureContext() {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return null;
+          if (!this.ctx) {
+            this.ctx = new AudioCtx();
+          }
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume().catch(() => {});
+          }
+          return this.ctx;
+        },
+
+        connectMediaElement(el, destNode) {
+          const ctx = this.ensureContext();
+          if (!ctx || !el || !destNode) return;
+          let src = this.mediaSources.get(el);
+          if (!src) {
+            try {
+              src = ctx.createMediaElementSource(el);
+              this.mediaSources.set(el, src);
+            } catch (e) {
+              return;
+            }
+          }
+          try {
+            src.disconnect();
+          } catch (e) {}
+          src.connect(destNode);
+          this.connectedMediaEls.add(src);
+        },
+
+        stopAll() {
+          for (const id of this.activeTimers) {
+            clearInterval(id);
+            clearTimeout(id);
+          }
+          this.activeTimers.clear();
+
+          // Pause custom audio element if playing
+          if (els.customAudioEl && !els.customAudioEl.paused) {
+            try {
+              els.customAudioEl.pause();
+              els.customAudioEl.currentTime = 0;
+            } catch (e) {}
+          }
+
+          for (const src of this.connectedMediaEls) {
+            try {
+              src.disconnect();
+            } catch (e) {}
+          }
+          this.connectedMediaEls.clear();
+
+          for (const node of this.activeNodes) {
+            try {
+              if (typeof node.stop === 'function') {
+                node.stop();
+              }
+            } catch (e) {
+              // Ignore already-stopped nodes
+            }
+            try {
+              node.disconnect();
+            } catch (e) {
+              // Ignore disconnect error
+            }
+          }
+          this.activeNodes.clear();
+
+          if (this.bgmGain) {
+            try {
+              this.bgmGain.disconnect();
+            } catch (e) {}
+            this.bgmGain = null;
+          }
+          if (this.masterGain) {
+            try {
+              this.masterGain.disconnect();
+            } catch (e) {}
+            this.masterGain = null;
+          }
+          this.recordDest = null;
+        },
+
+        fadeOutBgm(durationSec = 1.0) {
+          if (!this.ctx || !this.bgmGain) return;
+          const now = this.ctx.currentTime;
+          try {
+            this.bgmGain.gain.cancelScheduledValues(now);
+            this.bgmGain.gain.setValueAtTime(this.bgmGain.gain.value, now);
+            this.bgmGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
+          } catch (e) {}
+        },
+
+        setupSessionBuses(enableRecording = false, silentExport = false) {
+          const ctx = this.ensureContext();
+          if (!ctx) return null;
+          this.stopAll();
+          this.masterGain = ctx.createGain();
+          this.masterGain.gain.value = 0.72;
+          if (!silentExport) {
+            this.masterGain.connect(ctx.destination);
+          }
+
+          if (enableRecording && typeof ctx.createMediaStreamDestination === 'function') {
+            this.recordDest = ctx.createMediaStreamDestination();
+            this.masterGain.connect(this.recordDest);
+          }
+
+          this.bgmGain = ctx.createGain();
+          this.bgmGain.gain.value = 0.55;
+          this.bgmGain.connect(this.masterGain);
+          return ctx;
+        },
+
+        registerNode(node) {
+          this.activeNodes.add(node);
+          return node;
+        },
+
+        createNoiseBuffer(ctx, seconds = 1.2) {
+          const sampleRate = ctx.sampleRate;
+          const length = Math.floor(sampleRate * seconds);
+          const buffer = ctx.createBuffer(1, length, sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < length; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+          return buffer;
+        },
+
+        playNote(ctx, dest, freq, type, startTime, duration, peakGain, attack = 0.02) {
+          const osc = this.registerNode(ctx.createOscillator());
+          const gain = this.registerNode(ctx.createGain());
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, startTime);
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.linearRampToValueAtTime(peakGain, startTime + attack);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+          osc.connect(gain);
+          gain.connect(dest);
+          osc.start(startTime);
+          osc.stop(startTime + duration + 0.03);
+        },
+
+        startBgm(type) {
+          if (!type || type === 'none') return;
+          const ctx = this.ctx;
+          if (!ctx || !this.bgmGain) return;
+          const dest = this.bgmGain;
+
+          if (type === 'horror') {
+            // Dissonant drone + modulated lowpass + eerie high tremolo + heartbeat
+            const filter = this.registerNode(ctx.createBiquadFilter());
+            filter.type = 'lowpass';
+            filter.frequency.value = 280;
+            filter.Q.value = 4;
+            filter.connect(dest);
+
+            const lfo = this.registerNode(ctx.createOscillator());
+            const lfoGain = this.registerNode(ctx.createGain());
+            lfo.frequency.value = 0.35;
+            lfoGain.gain.value = 140;
+            lfo.connect(lfoGain);
+            lfoGain.connect(filter.frequency);
+            lfo.start();
+
+            [73.42, 77.78, 110.0].forEach((freq, idx) => {
+              const osc = this.registerNode(ctx.createOscillator());
+              const g = this.registerNode(ctx.createGain());
+              osc.type = idx === 2 ? 'triangle' : 'sawtooth';
+              osc.frequency.value = freq;
+              g.gain.value = idx === 2 ? 0.14 : 0.11;
+              osc.connect(g);
+              g.connect(filter);
+              osc.start();
+            });
+
+            // High eerie string
+            const eerie = this.registerNode(ctx.createOscillator());
+            const eerieGain = this.registerNode(ctx.createGain());
+            eerie.type = 'sine';
+            eerie.frequency.value = 830.6;
+            eerieGain.gain.value = 0.025;
+            eerie.connect(eerieGain);
+            eerieGain.connect(dest);
+            eerie.start();
+
+            const beat = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const t = this.ctx.currentTime;
+              this.playNote(this.ctx, dest, 60, 'sine', t, 0.16, 0.35, 0.01);
+              this.playNote(this.ctx, dest, 52, 'sine', t + 0.22, 0.22, 0.28, 0.01);
+            };
+            beat();
+            this.activeTimers.add(setInterval(beat, 1150));
+          } else if (type === 'docu') {
+            // Warm piano-like arpeggio progression (Cmaj7 -> Am7 -> Fmaj7 -> Gsus4)
+            const chords = [
+              [261.63, 329.63, 392.0, 493.88],
+              [220.0, 261.63, 329.63, 392.0],
+              [174.61, 220.0, 261.63, 329.63],
+              [196.0, 261.63, 293.66, 392.0]
+            ];
+            let step = 0;
+            const tick = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const chord = chords[Math.floor(step / 4) % chords.length];
+              const freq = chord[step % 4];
+              const t = this.ctx.currentTime;
+              this.playNote(this.ctx, dest, freq, 'triangle', t, 1.35, 0.22, 0.04);
+              this.playNote(this.ctx, dest, freq * 0.5, 'sine', t, 1.5, 0.14, 0.05);
+              step++;
+            };
+            tick();
+            this.activeTimers.add(setInterval(tick, 480));
+          } else if (type === 'comedy') {
+            // Upbeat staccato bouncy synth bass + quirky plucks
+            const bassNotes = [130.81, 196.0, 146.83, 196.0, 164.81, 196.0, 174.61, 196.0];
+            const leadNotes = [523.25, 659.25, 587.33, 783.99, 698.46, 659.25, 587.33, 523.25];
+            let step = 0;
+            const tick = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const t = this.ctx.currentTime;
+              const b = bassNotes[step % bassNotes.length];
+              const l = leadNotes[step % leadNotes.length];
+              this.playNote(this.ctx, dest, b, 'square', t, 0.14, 0.09, 0.01);
+              if (step % 2 === 0 || step % 4 === 3) {
+                this.playNote(this.ctx, dest, l, 'triangle', t, 0.15, 0.2, 0.01);
+              }
+              step++;
+            };
+            tick();
+            this.activeTimers.add(setInterval(tick, 210));
+          } else if (type === 'romance') {
+            // Dreamy high music-box / celesta shimmer
+            const notes = [523.25, 659.25, 783.99, 987.77, 880.0, 783.99, 659.25, 783.99];
+            let step = 0;
+            const tick = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const t = this.ctx.currentTime;
+              const f = notes[step % notes.length];
+              this.playNote(this.ctx, dest, f, 'sine', t, 1.25, 0.16, 0.015);
+              this.playNote(this.ctx, dest, f * 2, 'sine', t, 0.7, 0.04, 0.015);
+              step++;
+            };
+            tick();
+            this.activeTimers.add(setInterval(tick, 410));
+          } else if (type === 'news') {
+            // Urgent newsroom pulse + high alert beep
+            let step = 0;
+            const tick = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const t = this.ctx.currentTime;
+              const freq = step % 4 === 0 ? 880 : 440;
+              this.playNote(this.ctx, dest, freq, 'square', t, 0.08, 0.09, 0.005);
+              this.playNote(this.ctx, dest, 110, 'sawtooth', t, 0.12, 0.14, 0.005);
+              step++;
+            };
+            tick();
+            this.activeTimers.add(setInterval(tick, 220));
+          } else if (type === 'shorts') {
+            // Catchy upbeat shorts/reels synth beat
+            const bass = [130.81, 130.81, 164.81, 196.0, 174.61, 174.61, 196.0, 220.0];
+            let step = 0;
+            const tick = () => {
+              if (!this.bgmGain || !this.ctx) return;
+              const t = this.ctx.currentTime;
+              this.playNote(this.ctx, dest, bass[step % bass.length], 'triangle', t, 0.16, 0.28, 0.01);
+              if (step % 2 === 1) {
+                this.playNote(this.ctx, dest, 987.77, 'sine', t, 0.07, 0.12, 0.005);
+              }
+              step++;
+            };
+            tick();
+            this.activeTimers.add(setInterval(tick, 185));
+          } else if (type === 'custom') {
+            if (state.customAudioUrl && els.customAudioEl) {
+              this.connectMediaElement(els.customAudioEl, dest);
+              try {
+                els.customAudioEl.currentTime = 0;
+                els.customAudioEl.play().catch(() => {});
+              } catch (e) {}
+            }
+          }
+        },
+
+        playSfx(type, standalonePreview = false) {
+          if (!type || type === 'none') return;
+          let ctx = this.ctx;
+          let dest = this.masterGain;
+
+          if (standalonePreview || !ctx || !dest) {
+            ctx = this.ensureContext();
+            if (!ctx) return;
+            const previewGain = this.registerNode(ctx.createGain());
+            previewGain.gain.value = 0.75;
+            previewGain.connect(ctx.destination);
+            dest = previewGain;
+          }
+
+          const now = ctx.currentTime;
+
+          if (type === 'boing') {
+            // Pitch-bending playful boing with wobble
+            const osc = this.registerNode(ctx.createOscillator());
+            const lfo = this.registerNode(ctx.createOscillator());
+            const lfoGain = this.registerNode(ctx.createGain());
+            const gain = this.registerNode(ctx.createGain());
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(190, now);
+            osc.frequency.exponentialRampToValueAtTime(640, now + 0.18);
+            osc.frequency.exponentialRampToValueAtTime(340, now + 0.45);
+            osc.frequency.exponentialRampToValueAtTime(520, now + 0.72);
+
+            lfo.frequency.value = 18;
+            lfoGain.gain.value = 28;
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc.frequency);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.42, now + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+            osc.connect(gain);
+            gain.connect(dest);
+            lfo.start(now);
+            osc.start(now);
+            lfo.stop(now + 0.82);
+            osc.stop(now + 0.82);
+          } else if (type === 'dudung') {
+            // Two-beat cinematic timpani / sub-bass drop + filtered noise hit
+            const hit = (offset, startFreq, endFreq, vol) => {
+              const osc = this.registerNode(ctx.createOscillator());
+              const g = this.registerNode(ctx.createGain());
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(startFreq, now + offset);
+              osc.frequency.exponentialRampToValueAtTime(endFreq, now + offset + 0.45);
+              g.gain.setValueAtTime(0.001, now + offset);
+              g.gain.linearRampToValueAtTime(vol, now + offset + 0.015);
+              g.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.85);
+              osc.connect(g);
+              g.connect(dest);
+              osc.start(now + offset);
+              osc.stop(now + offset + 0.9);
+            };
+            hit(0, 145, 58, 0.55);
+            hit(0.26, 120, 42, 0.72);
+
+            const noise = this.registerNode(ctx.createBufferSource());
+            noise.buffer = this.createNoiseBuffer(ctx, 0.6);
+            const nf = this.registerNode(ctx.createBiquadFilter());
+            nf.type = 'lowpass';
+            nf.frequency.value = 420;
+            const ng = this.registerNode(ctx.createGain());
+            ng.gain.setValueAtTime(0.001, now + 0.26);
+            ng.gain.linearRampToValueAtTime(0.28, now + 0.28);
+            ng.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+            noise.connect(nf);
+            nf.connect(ng);
+            ng.connect(dest);
+            noise.start(now + 0.26);
+          } else if (type === 'stinger') {
+            // Screeching dissonant horror cluster + sudden noise burst
+            [622.25, 659.25, 932.33, 1244.5].forEach((f) => {
+              const osc = this.registerNode(ctx.createOscillator());
+              const g = this.registerNode(ctx.createGain());
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(f * 0.92, now);
+              osc.frequency.exponentialRampToValueAtTime(f * 1.12, now + 0.14);
+              osc.frequency.exponentialRampToValueAtTime(f * 0.86, now + 1.0);
+              g.gain.setValueAtTime(0.001, now);
+              g.gain.linearRampToValueAtTime(0.11, now + 0.03);
+              g.gain.exponentialRampToValueAtTime(0.001, now + 1.05);
+              osc.connect(g);
+              g.connect(dest);
+              osc.start(now);
+              osc.stop(now + 1.08);
+            });
+
+            const noise = this.registerNode(ctx.createBufferSource());
+            noise.buffer = this.createNoiseBuffer(ctx, 0.45);
+            const nf = this.registerNode(ctx.createBiquadFilter());
+            nf.type = 'bandpass';
+            nf.frequency.value = 1800;
+            const ng = this.registerNode(ctx.createGain());
+            ng.gain.setValueAtTime(0.32, now);
+            ng.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+            noise.connect(nf);
+            nf.connect(ng);
+            ng.connect(dest);
+            noise.start(now);
+          } else if (type === 'fanfare') {
+            // Bright triumphant brass-like major chord arpeggio (C5-E5-G5-C6)
+            const notes = [
+              { freq: 523.25, time: 0.0, dur: 0.22 },
+              { freq: 659.25, time: 0.11, dur: 0.22 },
+              { freq: 783.99, time: 0.22, dur: 0.24 },
+              { freq: 1046.5, time: 0.34, dur: 0.78 }
+            ];
+            notes.forEach((n) => {
+              this.playNote(ctx, dest, n.freq, 'triangle', now + n.time, n.dur, 0.26, 0.015);
+              this.playNote(ctx, dest, n.freq * 0.5, 'sawtooth', now + n.time, n.dur, 0.07, 0.02);
+            });
+          }
+        },
+
+        playModulatedMicVoice(audioBuffer, fxMode = 'normal', standalonePreview = false) {
+          if (!audioBuffer) return 0;
+          let ctx = this.ctx;
+          let dest = this.masterGain;
+          if (standalonePreview || !ctx || !dest) {
+            ctx = this.ensureContext();
+            if (!ctx) return 0;
+            const previewGain = this.registerNode(ctx.createGain());
+            previewGain.gain.value = 0.95;
+            previewGain.connect(ctx.destination);
+            dest = previewGain;
+          }
+
+          const src = this.registerNode(ctx.createBufferSource());
+          src.buffer = audioBuffer;
+
+          let rate = 1.0;
+          if (fxMode === 'helium') rate = 1.45;
+          else if (fxMode === 'monster') rate = 0.68;
+          src.playbackRate.value = rate;
+
+          const voiceGain = this.registerNode(ctx.createGain());
+          voiceGain.gain.value = 1.15;
+          src.connect(voiceGain);
+          voiceGain.connect(dest);
+
+          if (fxMode === 'echo') {
+            const delay = this.registerNode(ctx.createDelay(1.0));
+            delay.delayTime.value = 0.22;
+            const fb = this.registerNode(ctx.createGain());
+            fb.gain.value = 0.42;
+            voiceGain.connect(delay);
+            delay.connect(fb);
+            fb.connect(delay);
+            delay.connect(dest);
+          }
+
+          src.start(ctx.currentTime);
+          return audioBuffer.duration / rate;
+        }
+      };
+
+      /* =========================================================
+       * 5. Playback Synchronizer & TTS Handling
+       * ========================================================= */
+      let playToken = 0;
+      let typewriterTimer = null;
+      let typewriterTypedText = '';
+      let playbackStartTime = 0;
+      let fallbackTimer = null;
+      let tailTimer = null;
+      let currentUtterance = null; // Prevent Chrome GC bug on SpeechSynthesisUtterance
+      let cachedKoreanVoice = null;
+
+      function findKoreanVoice() {
+        if (!('speechSynthesis' in window)) return null;
+        const voices = window.speechSynthesis.getVoices() || [];
+        cachedKoreanVoice =
+          voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('ko-kr')) ||
+          voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('ko')) ||
+          null;
+        return cachedKoreanVoice;
+      }
+
+      if ('speechSynthesis' in window) {
+        findKoreanVoice();
+        if (typeof window.speechSynthesis.addEventListener === 'function') {
+          window.speechSynthesis.addEventListener('voiceschanged', findKoreanVoice);
+        }
+      } else {
+        els.ttsEnabled.checked = false;
+        els.ttsEnabled.disabled = true;
+        state.ttsEnabled = false;
+        els.ttsNotice.textContent = '이 브라우저는 음성 합성을 지원하지 않아 자막과 사운드로만 재생됩니다.';
+      }
+
+      let twistTimer = null;
+
+      const TWIST_PROFILES = {
+        horror: { subtitle: 'horror', bgm: 'horror', sfx: 'stinger', filters: ['grayscale-vignette', 'zoom'] },
+        comedy: { subtitle: 'comedy', bgm: 'comedy', sfx: 'boing', filters: ['shake'] },
+        docu: { subtitle: 'docu', bgm: 'docu', sfx: 'dudung', filters: ['cinema', 'zoom'] },
+        romance: { subtitle: 'romance', bgm: 'romance', sfx: 'fanfare', filters: ['romance', 'zoom'] }
+      };
+
+      function splitLineForTwist(text) {
+        if (text.includes('/')) {
+          const parts = text.split('/');
+          return [parts[0].trim() || text, parts.slice(1).join(' ').trim() || text];
+        }
+        const words = text.trim().split(/\s+/);
+        if (words.length >= 2) {
+          const mid = Math.ceil(words.length / 2);
+          return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+        }
+        const chars = Array.from(text.trim());
+        const mid = Math.ceil(chars.length / 2);
+        return [chars.slice(0, mid).join(''), chars.slice(mid).join('') || text];
+      }
+
+      function clearPlaybackTimers() {
+        if (typewriterTimer) {
+          clearInterval(typewriterTimer);
+          typewriterTimer = null;
+        }
+        if (fallbackTimer) {
+          clearTimeout(fallbackTimer);
+          fallbackTimer = null;
+        }
+        if (tailTimer) {
+          clearTimeout(tailTimer);
+          tailTimer = null;
+        }
+        if (twistTimer) {
+          clearTimeout(twistTimer);
+          twistTimer = null;
+        }
+      }
+
+      function createSparkleParticles() {
+        els.particleLayer.innerHTML = '';
+        const glyphs = ['✨', '💖', '🌸', '✨', '💕', '⭐'];
+        for (let i = 0; i < 16; i++) {
+          const span = document.createElement('span');
+          span.className = 'sparkle-particle';
+          span.textContent = glyphs[i % glyphs.length];
+          span.style.left = `${(i * 6.2 + (i % 3) * 2) % 95}%`;
+          span.style.animationDelay = `${(i * 0.24).toFixed(2)}s`;
+          span.style.animationDuration = `${(2.8 + (i % 4) * 0.45).toFixed(2)}s`;
+          els.particleLayer.appendChild(span);
+        }
+      }
+      createSparkleParticles();
+
+      function stopPlayback(showReflection = false) {
+        playToken++;
+        clearPlaybackTimers();
+        AudioEngine.stopAll();
+
+        if (els.stageCustomVideo && !els.stageCustomVideo.paused) {
+          try {
+            els.stageCustomVideo.pause();
+            els.stageCustomVideo.currentTime = 0;
+          } catch (e) {}
+        }
+
+        if ('speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+          } catch (e) {}
+        }
+        currentUtterance = null;
+
+        const wasGenre = state.isPlaying && !state.playingOriginal;
+        state.isPlaying = false;
+        state.playingOriginal = false;
+
+        if (state.isRecording) {
+          finishVideoRecording();
+        }
+
+        renderStagePreview();
+        updatePlaybackUI();
+
+        if (showReflection && wasGenre) {
+          showReflectionCard();
+        }
+      }
+
+      function startTypewriter(text) {
+        if (typewriterTimer) {
+          clearInterval(typewriterTimer);
+          typewriterTimer = null;
+        }
+        const chars = Array.from(text);
+        let idx = 0;
+        typewriterTypedText = '';
+        els.subtitleText.innerHTML = '<span class="typewriter-cursor"></span>';
+
+        typewriterTimer = setInterval(() => {
+          idx++;
+          const slice = chars.slice(0, idx).join('');
+          typewriterTypedText = slice;
+          els.subtitleText.textContent = slice;
+          const cursor = document.createElement('span');
+          cursor.className = 'typewriter-cursor';
+          els.subtitleText.appendChild(cursor);
+          if (idx >= chars.length) {
+            clearInterval(typewriterTimer);
+            typewriterTimer = null;
+          }
+        }, 72);
+      }
+
+      function triggerPlayback(isOriginalMode, overrideConfig = null, onEndedCallback = null) {
+        const lineText = (els.dialogueInput.value || '').trim() || '어, 너 여기 있었네?';
+        state.line = lineText;
+        els.dialogueInput.value = lineText;
+        updateCharCounter();
+
+        // Clean up any previous playback first
+        stopPlayback(false);
+        els.reflectionCard.classList.add('hidden');
+
+        const myToken = ++playToken;
+        state.isPlaying = true;
+        state.playingOriginal = isOriginalMode;
+        playbackStartTime = performance.now();
+
+        const cfg = overrideConfig || {
+          subtitle: isOriginalMode ? 'basic' : state.subtitle,
+          bgm: isOriginalMode ? 'none' : state.bgm,
+          sfx: isOriginalMode ? 'none' : state.sfx,
+          filters: isOriginalMode ? [] : state.filters,
+          ttsRate: isOriginalMode ? 1.0 : state.ttsRate,
+          ttsPitch: isOriginalMode ? 1.0 : state.ttsPitch,
+          ttsEnabled: isOriginalMode ? true : state.ttsEnabled,
+          voiceMode: isOriginalMode ? 'tts' : state.voiceMode
+        };
+
+        const useTwist = !isOriginalMode && !overrideConfig && state.twistEnabled;
+        const [part1Text, part2Text] = useTwist ? splitLineForTwist(lineText) : [lineText, lineText];
+
+        // Apply visual preview for active mode
+        renderStagePreview(cfg, part1Text);
+        updatePlaybackUI();
+
+        // Force CSS animation restart via reflow
+        els.stageViewport.classList.remove('is-playing');
+        els.watermarkBadge.classList.remove('is-playing');
+        els.subtitleText.classList.remove('anim-play');
+        void els.stageViewport.offsetWidth;
+        els.stageViewport.classList.add('is-playing');
+        els.watermarkBadge.classList.add('is-playing');
+
+        if (cfg.subtitle === 'docu') {
+          startTypewriter(part1Text);
+        } else {
+          typewriterTypedText = part1Text;
+          els.subtitleText.textContent = part1Text;
+          els.subtitleText.classList.add('anim-play');
+        }
+
+        // Start AudioContext & Synthesized Sound inside click gesture
+        const ctx = AudioEngine.setupSessionBuses(false);
+        if (state.scene === 'custom-video' && els.stageCustomVideo && state.customVideoUrl) {
+          if (ctx && AudioEngine.masterGain) {
+            AudioEngine.connectMediaElement(els.stageCustomVideo, AudioEngine.masterGain);
+          }
+          try {
+            els.stageCustomVideo.currentTime = 0;
+            els.stageCustomVideo.play().catch(() => {});
+          } catch (e) {}
+        }
+
+        if (!isOriginalMode && ctx) {
+          AudioEngine.startBgm(cfg.bgm);
+          if (cfg.sfx !== 'none') {
+            AudioEngine.playSfx(cfg.sfx, false);
+          }
+        }
+
+        // Twist cut transition at 2.0s
+        if (useTwist) {
+          twistTimer = setTimeout(() => {
+            if (myToken !== playToken) return;
+            const twist = TWIST_PROFILES[state.twistGenre] || TWIST_PROFILES.horror;
+            const twistCfg = {
+              subtitle: twist.subtitle,
+              bgm: twist.bgm,
+              sfx: twist.sfx,
+              filters: twist.filters
+            };
+            renderStagePreview(twistCfg, part2Text);
+            els.stageViewport.classList.remove('is-playing');
+            els.subtitleText.classList.remove('anim-play');
+            void els.stageViewport.offsetWidth;
+            els.stageViewport.classList.add('is-playing');
+            if (twist.subtitle === 'docu') {
+              startTypewriter(part2Text);
+            } else {
+              els.subtitleText.textContent = part2Text;
+              els.subtitleText.classList.add('anim-play');
+            }
+            if (ctx) {
+              AudioEngine.stopAll();
+              const nextCtx = AudioEngine.setupSessionBuses(false);
+              if (nextCtx) {
+                AudioEngine.startBgm(twist.bgm);
+                AudioEngine.playSfx(twist.sfx, false);
+              }
+            }
+          }, 2000);
+        }
+
+        const finishGracefully = () => {
+          if (myToken !== playToken) return;
+          AudioEngine.fadeOutBgm(1.0);
+          tailTimer = setTimeout(() => {
+            if (myToken !== playToken) return;
+            stopPlayback(!isOriginalMode && !onEndedCallback);
+            if (typeof onEndedCallback === 'function') {
+              onEndedCallback();
+            }
+          }, 1200);
+        };
+
+        // Modulated Mic Voice playback
+        if (cfg.voiceMode === 'mic' && state.micAudioBuffer) {
+          const durSec = AudioEngine.playModulatedMicVoice(state.micAudioBuffer, state.micFx, false);
+          const waitMs = Math.max(useTwist ? 4200 : 2800, Math.ceil(durSec * 1000) + 400);
+          fallbackTimer = setTimeout(finishGracefully, waitMs);
+          return;
+        }
+
+        // TTS playback
+        const canSpeak =
+          'speechSynthesis' in window &&
+          typeof SpeechSynthesisUtterance !== 'undefined' &&
+          cfg.ttsEnabled;
+
+        if (canSpeak) {
+          try {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(lineText.replace(/\//g, ' '));
+            currentUtterance = utter;
+            utter.lang = 'ko-KR';
+            const voice = cachedKoreanVoice || findKoreanVoice();
+            if (voice) utter.voice = voice;
+            utter.rate = cfg.ttsRate;
+            utter.pitch = cfg.ttsPitch;
+
+            let ended = false;
+            const onDone = () => {
+              if (ended || myToken !== playToken) return;
+              ended = true;
+              if (useTwist) {
+                // Ensure at least 4.1s so twist cut finishes visibly
+                const remain = Math.max(0, 4100 - (performance.now() - playbackStartTime));
+                setTimeout(finishGracefully, remain);
+              } else {
+                finishGracefully();
+              }
+            };
+
+            utter.onend = onDone;
+            utter.onerror = onDone;
+            window.speechSynthesis.speak(utter);
+
+            // Safety cap (~10s) in case browser TTS hangs
+            fallbackTimer = setTimeout(onDone, 10000);
+            return;
+          } catch (e) {
+            // Fall through to non-TTS timer
+          }
+        }
+
+        // Fallback timer when TTS is off or unsupported
+        fallbackTimer = setTimeout(() => {
+          finishGracefully();
+        }, 4200);
+      }
+
+      /* =========================================================
+       * 6. UI Rendering & Synchronization
+       * ========================================================= */
+      function renderScene() {
+        const isCustomImg = state.scene === 'custom-image' && state.customImageUrl;
+        const isCustomVid = state.scene === 'custom-video' && state.customVideoUrl;
+
+        els.stageSceneSvg.classList.toggle('hidden', Boolean(isCustomImg || isCustomVid));
+        els.stageCustomImg.classList.toggle('hidden', !isCustomImg);
+        els.stageCustomVideo.classList.toggle('hidden', !isCustomVid);
+
+        if (!isCustomImg && !isCustomVid) {
+          els.stageSceneSvg.innerHTML = getSceneMarkup(state.scene);
+        }
+
+        els.scenePills.forEach((pill) => {
+          pill.classList.toggle('active', pill.dataset.scene === state.scene);
+        });
+        els.btnUploadImage.classList.toggle('active', isCustomImg);
+        els.btnUploadVideo.classList.toggle('active', isCustomVid);
+      }
+
+      function renderStagePreview(overrideCfg = null, overrideLine = null) {
+        const useOriginal = state.isPlaying && state.playingOriginal;
+        const activeSub = overrideCfg ? overrideCfg.subtitle : (useOriginal ? 'basic' : state.subtitle);
+        const activeBgm = overrideCfg ? overrideCfg.bgm : (useOriginal ? 'none' : state.bgm);
+        const activeFilters = overrideCfg ? overrideCfg.filters : (useOriginal ? [] : state.filters);
+        const activeLine = overrideLine !== null ? overrideLine : (state.line || '어, 너 여기 있었네?');
+
+        // Stage filter classes
+        els.stageViewport.className = 'stage-viewport';
+        if (state.isPlaying) els.stageViewport.classList.add('is-playing');
+        activeFilters.forEach((f) => {
+          els.stageViewport.classList.add(`fx-${f}`);
+        });
+
+        // Watermark badge & Spoiler hide
+        els.watermarkBadge.className = 'watermark-badge';
+        if (state.hideSpoiler) els.watermarkBadge.classList.add('is-hidden');
+        if (state.isPlaying) els.watermarkBadge.classList.add('is-playing');
+        if (useOriginal) {
+          els.watermarkBadge.textContent = '😐 원본 무편집';
+          els.watermarkBadge.classList.add('wm-original');
+        } else if (activeSub === 'horror' || activeBgm === 'horror') {
+          els.watermarkBadge.textContent = '● REC';
+          els.watermarkBadge.classList.add('wm-horror');
+        } else if (activeSub === 'comedy' || activeBgm === 'comedy') {
+          els.watermarkBadge.textContent = '★ 예능연구소';
+          els.watermarkBadge.classList.add('wm-comedy');
+        } else if (activeSub === 'docu' || activeBgm === 'docu') {
+          els.watermarkBadge.textContent = '[특집 다큐]';
+          els.watermarkBadge.classList.add('wm-docu');
+        } else if (activeSub === 'romance' || activeBgm === 'romance') {
+          els.watermarkBadge.textContent = '♥ 드라마';
+          els.watermarkBadge.classList.add('wm-romance');
+        } else if (activeSub === 'news' || activeBgm === 'news') {
+          els.watermarkBadge.textContent = '● 속보 LIVE';
+          els.watermarkBadge.classList.add('wm-news');
+        } else if (activeSub === 'shorts' || activeBgm === 'shorts') {
+          els.watermarkBadge.textContent = '▶ Shorts';
+          els.watermarkBadge.classList.add('wm-shorts');
+        } else {
+          els.watermarkBadge.textContent = 'STUDIO';
+        }
+
+        // Subtitle preview (when not actively running typewriter)
+        els.subtitleText.className = `subtitle-text sub-${activeSub}`;
+        if (!state.isPlaying || activeSub !== 'docu') {
+          els.subtitleText.textContent = activeLine;
+        }
+      }
+
+      function updatePlaybackUI() {
+        els.btnStop.disabled = !state.isPlaying;
+        els.btnRecordVideo.disabled = state.isPlaying || state.isRecording;
+        els.btnRecordVideo.classList.toggle('is-recording', state.isRecording);
+        els.btnRecordVideo.textContent = state.isRecording
+          ? '⏳ 영상 파일 만드는 중...'
+          : '📥 영상 저장 (패들렛용)';
+
+        els.monitorStatus.classList.toggle('is-playing', state.isPlaying);
+        els.playbackLiveBadge.className = 'playback-live-badge';
+
+        if (state.isRecording) {
+          els.monitorStatusText.textContent = '파일 저장 중';
+          const ttsWarning = state.voiceMode === 'tts' && state.ttsEnabled
+            ? ' (AI 목소리는 제외 · BGM/효과음 저장)'
+            : ' (내 목소리·BGM·효과음 포함)';
+          els.playbackLiveBadge.textContent = `📥 패들렛용 영상 생성 중...${ttsWarning}`;
+          els.playbackLiveBadge.classList.add('active-genre');
+        } else if (!state.isPlaying) {
+          els.monitorStatusText.textContent = '대기 중';
+          els.playbackLiveBadge.textContent = '준비 완료! 재생 버튼을 눌러보세요';
+        } else if (state.playingOriginal) {
+          els.monitorStatusText.textContent = '원본 재생 중';
+          els.playbackLiveBadge.textContent = '😐 원본(무편집) 상태로 재생 중...';
+          els.playbackLiveBadge.classList.add('active-original');
+        } else {
+          els.monitorStatusText.textContent = '장르 연출 재생 중';
+          els.playbackLiveBadge.textContent = '🎬 내가 만든 장르 효과로 재생 중...';
+          els.playbackLiveBadge.classList.add('active-genre');
+        }
+      }
+
+      function updateCharCounter() {
+        const len = (els.dialogueInput.value || '').length;
+        els.charCounter.textContent = `${len} / 45자`;
+      }
+
+      function syncControlButtons() {
+        els.subtitleButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.sub === state.subtitle);
+        });
+        els.bgmButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.bgm === state.bgm);
+        });
+        els.sfxButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.sfx === state.sfx);
+        });
+        els.btnPreviewSfx.disabled = state.sfx === 'none';
+        els.btnPreviewSfx.style.opacity = state.sfx === 'none' ? '0.45' : '1';
+        els.filterButtons.forEach((btn) => {
+          const val = btn.dataset.filter;
+          if (val === 'none') {
+            btn.classList.toggle('active', state.filters.length === 0);
+          } else {
+            btn.classList.toggle('active', state.filters.includes(val));
+          }
+        });
+
+        els.dialogueChips.forEach((chip) => {
+          chip.classList.toggle('active', chip.dataset.line === state.line);
+        });
+
+        els.ttsEnabled.checked = state.ttsEnabled;
+        els.ttsRate.value = String(state.ttsRate);
+        els.ttsPitch.value = String(state.ttsPitch);
+        els.ttsRateVal.textContent = `${state.ttsRate.toFixed(1)}x`;
+        els.ttsPitchVal.textContent = `${state.ttsPitch.toFixed(1)}`;
+        els.ttsSlidersWrap.classList.toggle('is-disabled', !state.ttsEnabled);
+
+        // Voice tabs & mic FX
+        els.tabVoiceTts.classList.toggle('active', state.voiceMode === 'tts');
+        els.tabVoiceMic.classList.toggle('active', state.voiceMode === 'mic');
+        els.voicePanelTts.classList.toggle('hidden', state.voiceMode !== 'tts');
+        els.voicePanelMic.classList.toggle('hidden', state.voiceMode !== 'mic');
+        els.micFxButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.micfx === state.micFx);
+        });
+
+        // Spoiler toggle
+        els.btnSpoilerToggle.classList.toggle('active', state.hideSpoiler);
+        els.btnSpoilerToggle.textContent = state.hideSpoiler ? '🕵️ 뱃지 숨김 ON' : '🕵️ 뱃지 숨기기';
+
+        // Twist controls
+        els.twistEnabled.checked = state.twistEnabled;
+        els.twistControls.style.opacity = state.twistEnabled ? '1' : '0.5';
+        els.twistControls.style.pointerEvents = state.twistEnabled ? 'auto' : 'none';
+
+        // Compare slot A summary
+        if (els.compareATags) {
+          const filterDesc = state.filters.length
+            ? state.filters.map((f) => LABELS.filters[f]).join('+')
+            : '필터 없음';
+          els.compareATags.textContent = `${LABELS.subtitle[state.subtitle]} · ${LABELS.bgm[state.bgm]} · ${LABELS.sfx[state.sfx]} · ${filterDesc}`;
+        }
+      }
+
+      function showReflectionCard() {
+        const tags = [
+          LABELS.subtitle[state.subtitle],
+          LABELS.bgm[state.bgm],
+          LABELS.sfx[state.sfx],
+          state.ttsEnabled
+            ? `목소리 속도 ${state.ttsRate.toFixed(1)}x · 톤 ${state.ttsPitch.toFixed(1)}`
+            : '목소리 끔',
+          state.filters.length > 0
+            ? state.filters.map((f) => LABELS.filters[f]).join(' + ')
+            : '화면 필터 없음'
+        ];
+
+        els.reflectionSummary.innerHTML = '';
+        tags.forEach((label) => {
+          const span = document.createElement('span');
+          span.className = 'summary-tag';
+          span.textContent = label;
+          els.reflectionSummary.appendChild(span);
+        });
+
+        els.reflectionCard.classList.remove('hidden');
+      }
+
+      function updateMissionBanner() {
+        const info = MISSIONS[state.mission] || MISSIONS.free;
+        els.missionBannerIcon.textContent = info.icon;
+        els.missionBannerText.textContent = info.text;
+        els.missionBanner.classList.toggle('is-free', state.mission === 'free');
+      }
+
+      /* =========================================================
+       * 7. Teacher Custom Missions (LocalStorage + URL Share)
+       * ========================================================= */
+      const CUSTOM_MISSIONS_KEY = 'genre_studio_custom_missions_v1';
+
+      function loadCustomMissions() {
+        try {
+          const raw = localStorage.getItem(CUSTOM_MISSIONS_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function saveCustomMissions(list) {
+        try {
+          localStorage.setItem(CUSTOM_MISSIONS_KEY, JSON.stringify(list));
+        } catch (e) {}
+      }
+
+      function registerCustomMissionsToSelect() {
+        // Remove previous custom options
+        els.missionSelect.querySelectorAll('option[data-custom="true"]').forEach((opt) => opt.remove());
+        const list = loadCustomMissions();
+        list.forEach((m) => {
+          MISSIONS[m.id] = { icon: '📌', text: `${m.title}: ${m.goal}`, defaultLine: m.line || '' };
+          const opt = document.createElement('option');
+          opt.value = m.id;
+          opt.textContent = `📌 ${m.title}`;
+          opt.dataset.custom = 'true';
+          els.missionSelect.appendChild(opt);
+        });
+        renderCustomMissionsModalList(list);
+      }
+
+      function renderCustomMissionsModalList(list) {
+        if (!list.length) {
+          els.customMissionsSection.classList.add('hidden');
+          els.customMissionsItems.innerHTML = '';
+          return;
+        }
+        els.customMissionsSection.classList.remove('hidden');
+        els.customMissionsItems.innerHTML = '';
+        list.forEach((m) => {
+          const row = document.createElement('div');
+          row.className = 'custom-mission-item';
+
+          const info = document.createElement('div');
+          info.innerHTML = `<strong>${escapeHtml(m.title)}</strong><br><span style="color:#64748b;font-size:0.78rem;">${escapeHtml(m.goal)}</span>`;
+
+          const actions = document.createElement('div');
+          actions.className = 'custom-mission-actions';
+
+          const copyBtn = document.createElement('button');
+          copyBtn.type = 'button';
+          copyBtn.className = 'btn-xs';
+          copyBtn.textContent = '🔗 링크복사';
+          copyBtn.addEventListener('click', () => {
+            const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ t: m.title, g: m.goal, l: m.line || '' }))));
+            const shareUrl = `${location.href.split('#')[0]}#mission=${payload}`;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(shareUrl).then(() => {
+                copyBtn.textContent = '✅ 복사됨!';
+                setTimeout(() => (copyBtn.textContent = '🔗 링크복사'), 1600);
+              }).catch(() => prompt('아래 링크를 복사해 학생들에게 공유하세요:', shareUrl));
+            } else {
+              prompt('아래 링크를 복사해 학생들에게 공유하세요:', shareUrl);
+            }
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'btn-xs danger';
+          delBtn.textContent = '삭제';
+          delBtn.addEventListener('click', () => {
+            const next = loadCustomMissions().filter((item) => item.id !== m.id);
+            saveCustomMissions(next);
+            delete MISSIONS[m.id];
+            if (state.mission === m.id) {
+              state.mission = 'free';
+              els.missionSelect.value = 'free';
+              updateMissionBanner();
+            }
+            registerCustomMissionsToSelect();
+          });
+
+          actions.appendChild(copyBtn);
+          actions.appendChild(delBtn);
+          row.appendChild(info);
+          row.appendChild(actions);
+          els.customMissionsItems.appendChild(row);
+        });
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function importSharedMissionFromHash() {
+        const hash = location.hash || '';
+        if (!hash.startsWith('#mission=')) return;
+        try {
+          const encoded = hash.slice('#mission='.length);
+          const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+          if (!data || !data.t || !data.g) return;
+          const list = loadCustomMissions();
+          let existing = list.find((m) => m.title === data.t && m.goal === data.g);
+          if (!existing) {
+            existing = {
+              id: `custom_${Date.now()}`,
+              title: data.t,
+              goal: data.g,
+              line: data.l || ''
+            };
+            list.push(existing);
+            saveCustomMissions(list);
+          }
+          registerCustomMissionsToSelect();
+          state.mission = existing.id;
+          els.missionSelect.value = existing.id;
+          updateMissionBanner();
+          if (existing.line) {
+            state.line = existing.line;
+            els.dialogueInput.value = existing.line;
+            updateCharCounter();
+            syncControlButtons();
+            renderStagePreview();
+          }
+        } catch (e) {}
+      }
+
+      /* =========================================================
+       * 8. Padlet Video Exporter (Offscreen Canvas + MediaRecorder)
+       * ========================================================= */
+      let activeRecorder = null;
+      let recordedChunks = [];
+      let recordRafId = null;
+      let svgSceneCacheImg = null;
+      let svgSceneCacheKey = '';
+
+      function refreshSvgCacheIfNeeded() {
+        if (state.scene === 'custom-image' || state.scene === 'custom-video') return;
+        if (svgSceneCacheKey === state.scene && svgSceneCacheImg) return;
+        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 800 450">${getSceneMarkup(state.scene)}</svg>`;
+        const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+        };
+        img.src = url;
+        svgSceneCacheImg = img;
+        svgSceneCacheKey = state.scene;
+      }
+
+      function drawCoverMedia(ctx, mediaEl, w, h) {
+        const mw = mediaEl.videoWidth || mediaEl.naturalWidth || 1280;
+        const mh = mediaEl.videoHeight || mediaEl.naturalHeight || 720;
+        const scale = Math.max(w / mw, h / mh);
+        const dw = mw * scale;
+        const dh = mh * scale;
+        ctx.drawImage(mediaEl, (w - dw) / 2, (h - dh) / 2, dw, dh);
+      }
+
+      function renderStageFrameToCanvas(ctx, W, H, elapsed, subTextOverride = null) {
+        ctx.save();
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, W, H);
+
+        // Camera shake offset
+        let shakeX = 0;
+        let shakeY = 0;
+        if (state.filters.includes('shake')) {
+          shakeX = Math.sin(elapsed * 42) * 8;
+          shakeY = Math.cos(elapsed * 37) * 6;
+        }
+
+        // Slow zoom-in scale
+        let zoomScale = 1;
+        if (state.filters.includes('zoom')) {
+          zoomScale = 1 + Math.min(elapsed / 4.0, 1) * 0.24;
+        }
+
+        // Filter string
+        const filters = [];
+        if (state.filters.includes('grayscale-vignette')) {
+          filters.push('grayscale(100%) contrast(1.28) brightness(0.82)');
+        } else if (state.filters.includes('cinema')) {
+          filters.push('sepia(22%) contrast(1.08) saturate(0.88) brightness(0.95)');
+        }
+        ctx.filter = filters.length ? filters.join(' ') : 'none';
+
+        ctx.save();
+        ctx.translate(W / 2 + shakeX, H / 2 + shakeY);
+        ctx.scale(zoomScale, zoomScale);
+        ctx.translate(-W / 2, -H / 2);
+
+        if (state.scene === 'custom-video' && els.stageCustomVideo.readyState >= 2) {
+          drawCoverMedia(ctx, els.stageCustomVideo, W, H);
+        } else if (state.scene === 'custom-image' && els.stageCustomImg.complete && els.stageCustomImg.naturalWidth > 0) {
+          drawCoverMedia(ctx, els.stageCustomImg, W, H);
+        } else if (svgSceneCacheImg && svgSceneCacheImg.complete) {
+          ctx.drawImage(svgSceneCacheImg, 0, 0, W, H);
+        }
+        ctx.restore();
+        ctx.filter = 'none';
+
+        // Vignette overlay
+        if (state.filters.includes('grayscale-vignette')) {
+          const grad = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.65);
+          grad.addColorStop(0, 'rgba(0,0,0,0)');
+          grad.addColorStop(1, 'rgba(0,0,0,0.82)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // Romance tint & sparkles
+        if (state.filters.includes('romance')) {
+          ctx.fillStyle = 'rgba(244, 114, 182, 0.22)';
+          ctx.fillRect(0, 0, W, H);
+          ctx.font = '32px sans-serif';
+          for (let i = 0; i < 12; i++) {
+            const px = ((i * 107) % (W - 60)) + 30;
+            const py = H - (((elapsed * 110 + i * 75) % (H + 60)) - 20);
+            ctx.globalAlpha = 0.85;
+            ctx.fillText(i % 2 === 0 ? '✨' : '💖', px, py);
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        // Stickers
+        if (state.stickers && state.stickers.length) {
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          state.stickers.forEach((st) => {
+            const sizePx = Math.round(88 * (st.scale || 1));
+            ctx.font = `${sizePx}px sans-serif`;
+            ctx.fillText(st.emoji, (st.xPct / 100) * W, (st.yPct / 100) * H);
+          });
+        }
+
+        // Cinema letterbox bars
+        if (state.filters.includes('cinema')) {
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(0, 0, W, H * 0.1);
+          ctx.fillRect(0, H * 0.9, W, H * 0.1);
+        }
+
+        // Watermark badge (respects hideSpoiler)
+        if (!state.hideSpoiler) {
+          const wmText = els.watermarkBadge.textContent || 'STUDIO';
+          ctx.font = 'bold 20px "Noto Sans KR", "Malgun Gothic", sans-serif';
+          const wmWidth = ctx.measureText(wmText).width + 28;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+          ctx.fillRect(W - wmWidth - 24, 22, wmWidth, 38);
+          ctx.fillStyle = state.subtitle === 'horror' || state.bgm === 'horror' ? '#ff4d4d' : '#ffffff';
+          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.fillText(wmText, W - wmWidth / 2 - 24, 41);
+        }
+
+        // Subtitle
+        const fullLine = (els.dialogueInput.value || '').trim() || state.line || '어, 너 여기 있었네?';
+        let subText = subTextOverride !== null ? subTextOverride : fullLine;
+        if (subTextOverride === null && state.subtitle === 'docu') {
+          const chars = Array.from(fullLine);
+          const shownCount = Math.min(chars.length, Math.max(1, Math.floor(elapsed / 0.072)));
+          subText = chars.slice(0, shownCount).join('');
+        }
+
+        const subY = H * 0.83;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        if (state.subtitle === 'horror') {
+          const jx = (Math.random() - 0.5) * 4;
+          const jy = (Math.random() - 0.5) * 4;
+          ctx.font = 'bold 58px "East Sea Dokdo", "Gungsuh", "Nanum Myeongjo", serif';
+          ctx.shadowColor = 'rgba(185, 28, 28, 0.95)';
+          ctx.shadowBlur = 16;
+          ctx.lineWidth = 6;
+          ctx.strokeStyle = '#1f0303';
+          ctx.strokeText(subText, W / 2 + jx, subY + jy);
+          ctx.fillStyle = '#ff1e1e';
+          ctx.fillText(subText, W / 2 + jx, subY + jy);
+        } else if (state.subtitle === 'comedy') {
+          const bounce = Math.sin(elapsed * 6) * 6;
+          ctx.font = 'bold 52px "Jua", "Black Han Sans", "Malgun Gothic", sans-serif';
+          ctx.lineWidth = 10;
+          ctx.strokeStyle = '#111827';
+          ctx.strokeText(subText, W / 2, subY + bounce);
+          ctx.fillStyle = '#ffe600';
+          ctx.fillText(subText, W / 2, subY + bounce);
+        } else if (state.subtitle === 'docu') {
+          ctx.font = 'bold 40px "Nanum Myeongjo", "Batang", serif';
+          const tw = ctx.measureText(subText).width + 40;
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+          ctx.fillRect(W / 2 - tw / 2, subY - 30, tw, 60);
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillText(subText, W / 2, subY);
+        } else if (state.subtitle === 'romance') {
+          ctx.font = 'bold 46px "Gowun Dodum", "Malgun Gothic", sans-serif';
+          ctx.shadowColor = 'rgba(244, 63, 94, 0.95)';
+          ctx.shadowBlur = 18;
+          ctx.fillStyle = '#fff1f2';
+          ctx.fillText(subText, W / 2, subY);
+        } else if (state.subtitle === 'news') {
+          ctx.font = 'bold 38px "Noto Sans KR", "Malgun Gothic", sans-serif';
+          const newsTxt = `속보  ${subText}`;
+          const tw = ctx.measureText(newsTxt).width + 64;
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(W / 2 - tw / 2, subY - 32, tw, 64);
+          ctx.fillStyle = '#dc2626';
+          ctx.fillRect(W / 2 - tw / 2, subY - 32, 110, 64);
+          ctx.fillStyle = '#fde047';
+          ctx.fillText('속보', W / 2 - tw / 2 + 55, subY);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(subText, W / 2 + 45, subY);
+        } else if (state.subtitle === 'shorts') {
+          ctx.font = 'bold 56px "Black Han Sans", "Jua", "Malgun Gothic", sans-serif';
+          const tw = ctx.measureText(subText).width + 52;
+          ctx.fillStyle = 'rgba(79, 70, 229, 0.9)';
+          ctx.fillRect(W / 2 - tw / 2, subY - 36, tw, 72);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(subText, W / 2, subY);
+        } else {
+          ctx.font = 'bold 42px "Noto Sans KR", "Malgun Gothic", sans-serif';
+          const tw = ctx.measureText(subText).width + 40;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+          ctx.fillRect(W / 2 - tw / 2, subY - 30, tw, 60);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(subText, W / 2, subY);
+        }
+
+        ctx.restore();
+      }
+
+      function exportImagePng() {
+        refreshSvgCacheIfNeeded();
+        const canvas = document.createElement('canvas');
+        canvas.width = 1280;
+        canvas.height = 720;
+        const ctx = canvas.getContext('2d');
+        const fullLine = (els.dialogueInput.value || '').trim() || state.line || '어, 너 여기 있었네?';
+
+        const runDownload = () => {
+          renderStageFrameToCanvas(ctx, 1280, 720, 1.5, fullLine);
+          canvas.toBlob((blob) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `장르조작단_${Date.now()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 4000);
+          }, 'image/png');
+        };
+
+        if (state.scene !== 'custom-image' && state.scene !== 'custom-video' && svgSceneCacheImg && !svgSceneCacheImg.complete) {
+          svgSceneCacheImg.onload = runDownload;
+        } else {
+          runDownload();
+        }
+      }
+
+      function exportVideoSilently() {
+        if (typeof MediaRecorder === 'undefined') {
+          alert('이 브라우저에서는 영상 파일 저장을 지원하지 않습니다. 최신 Chrome 또는 Edge를 사용해 주세요.');
+          return;
+        }
+        stopPlayback(false);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 1280;
+        canvas.height = 720;
+        const ctx = canvas.getContext('2d');
+        refreshSvgCacheIfNeeded();
+
+        // Silent background audio session (does not play out loud through speakers)
+        const audioCtx = AudioEngine.setupSessionBuses(true, true);
+        if (audioCtx) {
+          AudioEngine.startBgm(state.bgm);
+          if (state.sfx !== 'none') {
+            AudioEngine.playSfx(state.sfx, false);
+          }
+          if (state.voiceMode === 'mic' && state.micAudioBuffer) {
+            AudioEngine.playModulatedMicVoice(state.micAudioBuffer, state.micFx, false);
+          }
+          if (state.scene === 'custom-video' && els.stageCustomVideo && state.customVideoUrl) {
+            if (AudioEngine.masterGain) {
+              AudioEngine.connectMediaElement(els.stageCustomVideo, AudioEngine.masterGain);
+            }
+            try {
+              els.stageCustomVideo.currentTime = 0;
+              els.stageCustomVideo.play().catch(() => {});
+            } catch (e) {}
+          }
+        }
+
+        const videoStream = canvas.captureStream(30);
+        const combinedTracks = [...videoStream.getVideoTracks()];
+        if (AudioEngine.recordDest && AudioEngine.recordDest.stream) {
+          AudioEngine.recordDest.stream.getAudioTracks().forEach((t) => combinedTracks.push(t));
+        }
+        const combinedStream = new MediaStream(combinedTracks);
+
+        const mimeCandidates = [
+          'video/mp4;codecs=avc1,mp4a',
+          'video/mp4',
+          'video/webm;codecs=vp9,opus',
+          'video/webm;codecs=vp8,opus',
+          'video/webm'
+        ];
+        const mimeType = mimeCandidates.find((m) => MediaRecorder.isTypeSupported(m)) || '';
+        const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+
+        recordedChunks = [];
+        try {
+          activeRecorder = mimeType ? new MediaRecorder(combinedStream, { mimeType }) : new MediaRecorder(combinedStream);
+        } catch (e) {
+          activeRecorder = new MediaRecorder(combinedStream);
+        }
+
+        activeRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        activeRecorder.onstop = () => {
+          if (recordRafId) {
+            cancelAnimationFrame(recordRafId);
+            recordRafId = null;
+          }
+          AudioEngine.stopAll();
+          if (els.stageCustomVideo && !els.stageCustomVideo.paused) {
+            try {
+              els.stageCustomVideo.pause();
+              els.stageCustomVideo.currentTime = 0;
+            } catch (e) {}
+          }
+          if (recordedChunks.length > 0) {
+            const blob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `장르조작단_${Date.now()}.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 4000);
+          }
+          activeRecorder = null;
+          state.isRecording = false;
+          updatePlaybackUI();
+        };
+
+        state.isRecording = true;
+        updatePlaybackUI();
+        const exportStart = performance.now();
+        activeRecorder.start(200);
+
+        const drawFrame = () => {
+          if (!state.isRecording) return;
+          const elapsed = (performance.now() - exportStart) / 1000;
+          renderStageFrameToCanvas(ctx, 1280, 720, elapsed);
+          if (elapsed >= 4.2) {
+            finishVideoRecording();
+            return;
+          }
+          recordRafId = requestAnimationFrame(drawFrame);
+        };
+
+        recordRafId = requestAnimationFrame(drawFrame);
+      }
+
+      function finishVideoRecording() {
+        state.isRecording = false;
+        if (recordRafId) {
+          cancelAnimationFrame(recordRafId);
+          recordRafId = null;
+        }
+        if (activeRecorder && activeRecorder.state !== 'inactive') {
+          try {
+            activeRecorder.stop();
+          } catch (e) {}
+        }
+      }
+
+      /* =========================================================
+       * 9. Event Listeners
+       * ========================================================= */
+      // Mission selector (does NOT auto-fill controls so students solve it themselves)
+      els.missionSelect.addEventListener('change', () => {
+        state.mission = els.missionSelect.value;
+        updateMissionBanner();
+        const info = MISSIONS[state.mission];
+        if (info && info.defaultLine) {
+          state.line = info.defaultLine;
+          els.dialogueInput.value = info.defaultLine;
+          updateCharCounter();
+          syncControlButtons();
+          renderStagePreview();
+        }
+      });
+
+      // Teacher topic modal
+      els.btnOpenTopicModal.addEventListener('click', () => {
+        els.topicModal.classList.remove('hidden');
+      });
+
+      els.btnCloseTopicModal.addEventListener('click', () => {
+        els.topicModal.classList.add('hidden');
+      });
+
+      els.topicModal.addEventListener('click', (e) => {
+        if (e.target === els.topicModal) {
+          els.topicModal.classList.add('hidden');
+        }
+      });
+
+      els.btnSaveTopic.addEventListener('click', () => {
+        const title = (els.topicTitleInput.value || '').trim();
+        const goal = (els.topicGoalInput.value || '').trim();
+        const line = (els.topicLineInput.value || '').trim();
+        if (!title || !goal) {
+          alert('주제 제목과 학생들에게 줄 미션 설명을 입력해 주세요!');
+          return;
+        }
+        const list = loadCustomMissions();
+        const newMission = { id: `custom_${Date.now()}`, title, goal, line };
+        list.push(newMission);
+        saveCustomMissions(list);
+        registerCustomMissionsToSelect();
+
+        state.mission = newMission.id;
+        els.missionSelect.value = newMission.id;
+        updateMissionBanner();
+        if (line) {
+          state.line = line;
+          els.dialogueInput.value = line;
+          updateCharCounter();
+          syncControlButtons();
+          renderStagePreview();
+        }
+
+        els.topicTitleInput.value = '';
+        els.topicGoalInput.value = '';
+        els.topicLineInput.value = '';
+      });
+
+      // Custom image / video / audio uploads
+      els.btnUploadImage.addEventListener('click', () => els.imageUploadInput.click());
+      els.imageUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (state.customImageUrl) URL.revokeObjectURL(state.customImageUrl);
+        state.customImageUrl = URL.createObjectURL(file);
+        els.stageCustomImg.src = state.customImageUrl;
+        state.scene = 'custom-image';
+        renderScene();
+      });
+
+      els.btnUploadVideo.addEventListener('click', () => els.videoUploadInput.click());
+      els.videoUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (state.customVideoUrl) URL.revokeObjectURL(state.customVideoUrl);
+        state.customVideoUrl = URL.createObjectURL(file);
+        els.stageCustomVideo.src = state.customVideoUrl;
+        els.stageCustomVideo.load();
+        els.stageCustomVideo.onloadeddata = () => {
+          try {
+            els.stageCustomVideo.currentTime = 0;
+          } catch (err) {}
+        };
+        state.scene = 'custom-video';
+        renderScene();
+      });
+
+      els.btnUploadAudio.addEventListener('click', () => els.audioUploadInput.click());
+      els.audioUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (state.customAudioUrl) URL.revokeObjectURL(state.customAudioUrl);
+        state.customAudioUrl = URL.createObjectURL(file);
+        state.customAudioName = file.name;
+        els.customAudioEl.src = state.customAudioUrl;
+        els.customAudioName.textContent = `🎵 ${file.name}`;
+        state.bgm = 'custom';
+        syncControlButtons();
+        renderStagePreview();
+      });
+
+      // Teacher quick demo presets
+      els.demoButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const preset = DEMO_PRESETS[btn.dataset.demo];
+          if (!preset) return;
+          stopPlayback(false);
+          els.reflectionCard.classList.add('hidden');
+          state.scene = preset.scene;
+          state.line = preset.line;
+          els.dialogueInput.value = preset.line;
+          state.subtitle = preset.subtitle;
+          state.bgm = preset.bgm;
+          state.sfx = preset.sfx;
+          state.ttsEnabled = 'speechSynthesis' in window ? preset.ttsEnabled : false;
+          state.ttsRate = preset.ttsRate;
+          state.ttsPitch = preset.ttsPitch;
+          state.filters = [...preset.filters];
+
+          updateCharCounter();
+          renderScene();
+          syncControlButtons();
+          renderStagePreview();
+        });
+      });
+
+      // Random mix
+      els.btnRandom.addEventListener('click', () => {
+        stopPlayback(false);
+        els.reflectionCard.classList.add('hidden');
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        state.subtitle = pick(['basic', 'horror', 'comedy', 'docu', 'romance']);
+        state.bgm = pick(['none', 'horror', 'docu', 'comedy', 'romance']);
+        state.sfx = pick(['none', 'boing', 'dudung', 'stinger', 'fanfare']);
+        state.ttsRate = Number((0.6 + Math.random() * 1.0).toFixed(1));
+        state.ttsPitch = Number((0.6 + Math.random() * 1.1).toFixed(1));
+
+        const filterPool = ['grayscale-vignette', 'zoom', 'romance', 'shake', 'cinema'];
+        const chosen = [];
+        filterPool.forEach((f) => {
+          if (Math.random() < 0.36) chosen.push(f);
+        });
+        state.filters = chosen;
+
+        syncControlButtons();
+        renderStagePreview();
+      });
+
+      // Reset
+      els.btnReset.addEventListener('click', () => {
+        stopPlayback(false);
+        els.reflectionCard.classList.add('hidden');
+        state.subtitle = 'basic';
+        state.bgm = 'none';
+        state.sfx = 'none';
+        state.ttsEnabled = 'speechSynthesis' in window;
+        state.ttsRate = 1.0;
+        state.ttsPitch = 1.0;
+        state.filters = [];
+
+        syncControlButtons();
+        renderStagePreview();
+      });
+
+      // Scene switcher
+      els.scenePills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          state.scene = pill.dataset.scene;
+          renderScene();
+        });
+      });
+
+      // Dialogue presets & input
+      els.dialogueChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          state.line = chip.dataset.line;
+          els.dialogueInput.value = state.line;
+          updateCharCounter();
+          syncControlButtons();
+          renderStagePreview();
+        });
+      });
+
+      els.dialogueInput.addEventListener('input', () => {
+        state.line = els.dialogueInput.value;
+        updateCharCounter();
+        syncControlButtons();
+        renderStagePreview();
+      });
+
+      // Subtitle options
+      els.subtitleButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.subtitle = btn.dataset.sub;
+          syncControlButtons();
+          renderStagePreview();
+        });
+      });
+
+      // BGM options
+      els.bgmButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.bgm;
+          if (val === 'custom' && !state.customAudioUrl) {
+            els.audioUploadInput.click();
+            return;
+          }
+          state.bgm = val;
+          syncControlButtons();
+          renderStagePreview();
+        });
+      });
+
+      // SFX options + preview button
+      els.sfxButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.sfx = btn.dataset.sfx;
+          syncControlButtons();
+        });
+      });
+
+      els.btnPreviewSfx.addEventListener('click', () => {
+        if (state.sfx === 'none') return;
+        AudioEngine.playSfx(state.sfx, true);
+      });
+
+      // TTS controls
+      els.ttsEnabled.addEventListener('change', () => {
+        state.ttsEnabled = els.ttsEnabled.checked;
+        syncControlButtons();
+      });
+
+      els.ttsRate.addEventListener('input', () => {
+        state.ttsRate = Number(els.ttsRate.value);
+        syncControlButtons();
+      });
+
+      els.ttsPitch.addEventListener('input', () => {
+        state.ttsPitch = Number(els.ttsPitch.value);
+        syncControlButtons();
+      });
+
+      // Filter multi-select chips
+      els.filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.filter;
+          if (val === 'none') {
+            state.filters = [];
+          } else {
+            const exists = state.filters.includes(val);
+            if (exists) {
+              state.filters = state.filters.filter((item) => item !== val);
+            } else {
+              state.filters = [...state.filters, val];
+            }
+          }
+          syncControlButtons();
+          renderStagePreview();
+        });
+      });
+
+      // Spoiler toggle
+      els.btnSpoilerToggle.addEventListener('click', () => {
+        state.hideSpoiler = !state.hideSpoiler;
+        syncControlButtons();
+        renderStagePreview();
+      });
+
+      // Stickers add / select / resize / drag / individual delete
+      function updateStickerEditControls() {
+        const hasSel = Boolean(
+          state.selectedStickerId && state.stickers.some((s) => s.id === state.selectedStickerId)
+        );
+        els.stickerEditControls.classList.toggle('is-disabled', !hasSel);
+      }
+
+      function renderStickers() {
+        els.stickerLayer.innerHTML = '';
+        state.stickers.forEach((st) => {
+          const el = document.createElement('div');
+          const isSelected = st.id === state.selectedStickerId;
+          el.className = 'stage-sticker' + (isSelected ? ' is-selected' : '');
+          el.style.left = `${st.xPct}%`;
+          el.style.top = `${st.yPct}%`;
+          el.style.setProperty('--stk-scale', String(st.scale || 1));
+          el.title = '터치/드래그 이동 · 휠 또는 +/- 버튼으로 크기 조절 · ✕ 삭제';
+
+          const emojiSpan = document.createElement('span');
+          emojiSpan.textContent = st.emoji;
+          el.appendChild(emojiSpan);
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'sticker-del-btn';
+          delBtn.textContent = '✕';
+          delBtn.title = '이 스티커 삭제';
+          delBtn.addEventListener('pointerdown', (ev) => {
+            ev.stopPropagation();
+          });
+          delBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            state.stickers = state.stickers.filter((item) => item.id !== st.id);
+            if (state.selectedStickerId === st.id) state.selectedStickerId = null;
+            renderStickers();
+          });
+          el.appendChild(delBtn);
+
+          el.addEventListener('dblclick', (ev) => {
+            ev.stopPropagation();
+            state.stickers = state.stickers.filter((item) => item.id !== st.id);
+            if (state.selectedStickerId === st.id) state.selectedStickerId = null;
+            renderStickers();
+          });
+
+          el.addEventListener(
+            'wheel',
+            (ev) => {
+              ev.preventDefault();
+              ev.stopPropagation();
+              state.selectedStickerId = st.id;
+              const delta = ev.deltaY < 0 ? 0.12 : -0.12;
+              st.scale = Math.max(0.4, Math.min(2.8, Number(((st.scale || 1) + delta).toFixed(2))));
+              renderStickers();
+            },
+            { passive: false }
+          );
+
+          el.addEventListener('pointerdown', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (state.selectedStickerId !== st.id) {
+              state.selectedStickerId = st.id;
+              renderStickers();
+              // Re-query newly rendered element? No, keep dragging smoothly via direct style update
+              return;
+            }
+            el.setPointerCapture(ev.pointerId);
+            const rect = els.stageViewport.getBoundingClientRect();
+            const onMove = (moveEv) => {
+              const nx = Math.max(5, Math.min(95, ((moveEv.clientX - rect.left) / rect.width) * 100));
+              const ny = Math.max(8, Math.min(92, ((moveEv.clientY - rect.top) / rect.height) * 100));
+              st.xPct = nx;
+              st.yPct = ny;
+              el.style.left = `${nx}%`;
+              el.style.top = `${ny}%`;
+            };
+            const onUp = () => {
+              el.removeEventListener('pointermove', onMove);
+              el.removeEventListener('pointerup', onUp);
+            };
+            el.addEventListener('pointermove', onMove);
+            el.addEventListener('pointerup', onUp);
+          });
+
+          els.stickerLayer.appendChild(el);
+        });
+        updateStickerEditControls();
+      }
+
+      els.stageViewport.addEventListener('pointerdown', () => {
+        if (state.selectedStickerId) {
+          state.selectedStickerId = null;
+          renderStickers();
+        }
+      });
+
+      els.stickerAddButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const offset = (state.stickers.length % 5) * 6 - 12;
+          const newId = `stk_${Date.now()}_${Math.random()}`;
+          state.stickers.push({
+            id: newId,
+            emoji: btn.dataset.sticker,
+            xPct: 50 + offset,
+            yPct: 45 + (state.stickers.length % 3) * 6 - 6,
+            scale: 1.0
+          });
+          state.selectedStickerId = newId;
+          renderStickers();
+        });
+      });
+
+      els.btnStickerSmaller.addEventListener('click', () => {
+        const st = state.stickers.find((s) => s.id === state.selectedStickerId);
+        if (!st) return;
+        st.scale = Math.max(0.4, Number(((st.scale || 1) - 0.2).toFixed(2)));
+        renderStickers();
+      });
+
+      els.btnStickerBigger.addEventListener('click', () => {
+        const st = state.stickers.find((s) => s.id === state.selectedStickerId);
+        if (!st) return;
+        st.scale = Math.min(2.8, Number(((st.scale || 1) + 0.2).toFixed(2)));
+        renderStickers();
+      });
+
+      els.btnStickerDelete.addEventListener('click', () => {
+        if (!state.selectedStickerId) return;
+        state.stickers = state.stickers.filter((s) => s.id !== state.selectedStickerId);
+        state.selectedStickerId = null;
+        renderStickers();
+      });
+
+      els.btnClearStickers.addEventListener('click', () => {
+        state.stickers = [];
+        state.selectedStickerId = null;
+        renderStickers();
+      });
+
+      // Twist cut toggle
+      els.twistEnabled.addEventListener('change', () => {
+        state.twistEnabled = els.twistEnabled.checked;
+        syncControlButtons();
+      });
+
+      els.twistGenreSelect.addEventListener('change', () => {
+        state.twistGenre = els.twistGenreSelect.value;
+      });
+
+      // Voice tabs & Mic recording/modulation
+      els.tabVoiceTts.addEventListener('click', () => {
+        state.voiceMode = 'tts';
+        syncControlButtons();
+      });
+
+      els.tabVoiceMic.addEventListener('click', () => {
+        state.voiceMode = 'mic';
+        syncControlButtons();
+      });
+
+      els.micFxButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.micFx = btn.dataset.micfx;
+          syncControlButtons();
+        });
+      });
+
+      let micMediaRecorder = null;
+      let micChunks = [];
+      let micStream = null;
+
+      els.btnMicRecord.addEventListener('click', async () => {
+        if (state.isMicRecording && micMediaRecorder) {
+          micMediaRecorder.stop();
+          return;
+        }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          els.micStatusText.textContent = '이 브라우저는 마이크 녹음을 지원하지 않습니다.';
+          return;
+        }
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          micChunks = [];
+          micMediaRecorder = new MediaRecorder(micStream);
+          micMediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) micChunks.push(e.data);
+          };
+          micMediaRecorder.onstop = async () => {
+            state.isMicRecording = false;
+            els.btnMicRecord.classList.remove('recording');
+            els.btnMicRecord.textContent = '🔴 다시 녹음하기';
+            if (micStream) {
+              micStream.getTracks().forEach((t) => t.stop());
+              micStream = null;
+            }
+            const blob = new Blob(micChunks, { type: micMediaRecorder.mimeType || 'audio/webm' });
+            const arrBuf = await blob.arrayBuffer();
+            const ctx = AudioEngine.ensureContext();
+            if (ctx) {
+              try {
+                state.micAudioBuffer = await ctx.decodeAudioData(arrBuf);
+                els.btnMicPreview.disabled = false;
+                els.micStatusText.textContent = `✅ 녹음 완료! (${state.micAudioBuffer.duration.toFixed(1)}초) — 변조 효과를 골라보세요.`;
+              } catch (err) {
+                els.micStatusText.textContent = '녹음 오디오 변환에 실패했습니다. 다시 시도해 주세요.';
+              }
+            }
+          };
+          state.isMicRecording = true;
+          els.btnMicRecord.classList.add('recording');
+          els.btnMicRecord.textContent = '⏹️ 녹음 끝내기 (말한 뒤 누르세요)';
+          els.micStatusText.textContent = '🎙️ 녹음 중입니다... 대사를 크게 말해보세요!';
+          micMediaRecorder.start();
+        } catch (err) {
+          els.micStatusText.textContent = '마이크 권한이 거부되었거나 마이크를 찾을 수 없습니다.';
+        }
+      });
+
+      els.btnMicPreview.addEventListener('click', () => {
+        if (!state.micAudioBuffer) return;
+        AudioEngine.playModulatedMicVoice(state.micAudioBuffer, state.micFx, true);
+      });
+
+      // A vs B Comparison panel
+      els.btnToggleCompare.addEventListener('click', () => {
+        state.compareOpen = !state.compareOpen;
+        els.compareCard.classList.toggle('hidden', !state.compareOpen);
+        syncControlButtons();
+      });
+
+      els.btnSaveSlotB.addEventListener('click', () => {
+        state.slotB = {
+          subtitle: state.subtitle,
+          bgm: state.bgm,
+          sfx: state.sfx,
+          filters: [...state.filters],
+          ttsRate: state.ttsRate,
+          ttsPitch: state.ttsPitch,
+          ttsEnabled: state.ttsEnabled,
+          voiceMode: state.voiceMode
+        };
+        const filterDesc = state.slotB.filters.length
+          ? state.slotB.filters.map((f) => LABELS.filters[f]).join('+')
+          : '필터 없음';
+        els.compareBTags.textContent = `${LABELS.subtitle[state.slotB.subtitle]} · ${LABELS.bgm[state.slotB.bgm]} · ${LABELS.sfx[state.slotB.sfx]} · ${filterDesc}`;
+      });
+
+      els.btnPlaySlotA.addEventListener('click', () => triggerPlayback(false, null));
+      els.btnPlaySlotB.addEventListener('click', () => {
+        if (!state.slotB) {
+          triggerPlayback(true, null);
+        } else {
+          triggerPlayback(false, state.slotB);
+        }
+      });
+
+      els.btnPlayAbSequence.addEventListener('click', () => {
+        triggerPlayback(false, null, () => {
+          setTimeout(() => {
+            if (!state.slotB) {
+              triggerPlayback(true, null);
+            } else {
+              triggerPlayback(false, state.slotB);
+            }
+          }, 350);
+        });
+      });
+
+      // Playback buttons
+      els.btnPlayGenre.addEventListener('click', () => triggerPlayback(false, null));
+      els.btnPlayOriginal.addEventListener('click', () => triggerPlayback(true, null));
+      els.btnRecordVideo.addEventListener('click', () => {
+        if (state.isRecording) return;
+        exportVideoSilently();
+      });
+      els.btnExportImage.addEventListener('click', () => exportImagePng());
+      els.btnStop.addEventListener('click', () => stopPlayback(false));
+
+      // Initial render
+      registerCustomMissionsToSelect();
+      importSharedMissionFromHash();
+      updateCharCounter();
+      updateMissionBanner();
+      renderScene();
+      renderStickers();
+      syncControlButtons();
+      renderStagePreview();
+      updatePlaybackUI();
+    })();
+  </script>
+</body>
+</html>
