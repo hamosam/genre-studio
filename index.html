@@ -3241,12 +3241,7 @@
               els.subtitleText.classList.add('anim-play');
             }
             if (ctx) {
-              AudioEngine.stopAll();
-              const nextCtx = AudioEngine.setupSessionBuses(false);
-              if (nextCtx) {
-                AudioEngine.startBgm(twist.bgm);
-                AudioEngine.playSfx(twist.sfx, false);
-              }
+              AudioEngine.switchBgmAndSfxInSession(twist.bgm, twist.sfx);
             }
           }, 2000);
         }
