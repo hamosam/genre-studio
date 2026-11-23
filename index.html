@@ -2633,6 +2633,36 @@
           return ctx;
         },
 
+        switchBgmAndSfxInSession(bgmType, sfxType) {
+          if (!this.ctx || !this.masterGain) return;
+          for (const id of this.activeTimers) {
+            clearInterval(id);
+            clearTimeout(id);
+          }
+          this.activeTimers.clear();
+
+          if (els.customAudioEl && !els.customAudioEl.paused) {
+            try {
+              els.customAudioEl.pause();
+              els.customAudioEl.currentTime = 0;
+            } catch (e) {}
+          }
+
+          if (this.bgmGain) {
+            try {
+              this.bgmGain.disconnect();
+            } catch (e) {}
+          }
+          this.bgmGain = this.ctx.createGain();
+          this.bgmGain.gain.value = 0.55;
+          this.bgmGain.connect(this.masterGain);
+
+          this.startBgm(bgmType);
+          if (sfxType && sfxType !== 'none') {
+            this.playSfx(sfxType, false);
+          }
+        },
+
         registerNode(node) {
           this.activeNodes.add(node);
           return node;
@@ -3656,7 +3686,24 @@
         ctx.drawImage(mediaEl, (w - dw) / 2, (h - dh) / 2, dw, dh);
       }
 
-      function renderStageFrameToCanvas(ctx, W, H, elapsed, subTextOverride = null) {
+      function getWatermarkLabel(sub, bgm) {
+        if (sub === 'horror' || bgm === 'horror') return '● REC';
+        if (sub === 'comedy' || bgm === 'comedy') return '★ 예능연구소';
+        if (sub === 'docu' || bgm === 'docu') return '[특집 다큐]';
+        if (sub === 'romance' || bgm === 'romance') return '♥ 드라마';
+        if (sub === 'news' || bgm === 'news') return '● 속보 LIVE';
+        if (sub === 'shorts' || bgm === 'shorts') return '▶ Shorts';
+        return 'STUDIO';
+      }
+
+      function renderStageFrameToCanvas(ctx, W, H, elapsed, subTextOverride = null, frameCfg = null) {
+        const activeSub = frameCfg ? frameCfg.subtitle : state.subtitle;
+        const activeBgm = frameCfg ? frameCfg.bgm : state.bgm;
+        const activeFilters = frameCfg ? frameCfg.filters : state.filters;
+        const baseLine = (frameCfg && frameCfg.line !== undefined)
+          ? frameCfg.line
+          : ((els.dialogueInput.value || '').trim() || state.line || '어, 너 여기 있었네?');
+
         ctx.save();
         ctx.fillStyle = '#0f172a';
         ctx.fillRect(0, 0, W, H);
@@ -3664,22 +3711,22 @@
         // Camera shake offset
         let shakeX = 0;
         let shakeY = 0;
-        if (state.filters.includes('shake')) {
+        if (activeFilters.includes('shake')) {
           shakeX = Math.sin(elapsed * 42) * 8;
           shakeY = Math.cos(elapsed * 37) * 6;
         }
 
         // Slow zoom-in scale
         let zoomScale = 1;
-        if (state.filters.includes('zoom')) {
+        if (activeFilters.includes('zoom')) {
           zoomScale = 1 + Math.min(elapsed / 4.0, 1) * 0.24;
         }
 
         // Filter string
         const filters = [];
-        if (state.filters.includes('grayscale-vignette')) {
+        if (activeFilters.includes('grayscale-vignette')) {
           filters.push('grayscale(100%) contrast(1.28) brightness(0.82)');
-        } else if (state.filters.includes('cinema')) {
+        } else if (activeFilters.includes('cinema')) {
           filters.push('sepia(22%) contrast(1.08) saturate(0.88) brightness(0.95)');
         }
         ctx.filter = filters.length ? filters.join(' ') : 'none';
@@ -3700,7 +3747,7 @@
         ctx.filter = 'none';
 
         // Vignette overlay
-        if (state.filters.includes('grayscale-vignette')) {
+        if (activeFilters.includes('grayscale-vignette')) {
           const grad = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.65);
           grad.addColorStop(0, 'rgba(0,0,0,0)');
           grad.addColorStop(1, 'rgba(0,0,0,0.82)');
@@ -3709,7 +3756,7 @@
         }
 
         // Romance tint & sparkles
-        if (state.filters.includes('romance')) {
+        if (activeFilters.includes('romance')) {
           ctx.fillStyle = 'rgba(244, 114, 182, 0.22)';
           ctx.fillRect(0, 0, W, H);
           ctx.font = '32px sans-serif';
@@ -3734,7 +3781,7 @@
         }
 
         // Cinema letterbox bars
-        if (state.filters.includes('cinema')) {
+        if (activeFilters.includes('cinema')) {
           ctx.fillStyle = '#000000';
           ctx.fillRect(0, 0, W, H * 0.1);
           ctx.fillRect(0, H * 0.9, W, H * 0.1);
@@ -3742,23 +3789,24 @@
 
         // Watermark badge (respects hideSpoiler)
         if (!state.hideSpoiler) {
-          const wmText = els.watermarkBadge.textContent || 'STUDIO';
+          const wmText = getWatermarkLabel(activeSub, activeBgm);
           ctx.font = 'bold 20px "Noto Sans KR", "Malgun Gothic", sans-serif';
           const wmWidth = ctx.measureText(wmText).width + 28;
           ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
           ctx.fillRect(W - wmWidth - 24, 22, wmWidth, 38);
-          ctx.fillStyle = state.subtitle === 'horror' || state.bgm === 'horror' ? '#ff4d4d' : '#ffffff';
+          ctx.fillStyle = activeSub === 'horror' || activeBgm === 'horror' ? '#ff4d4d' : '#ffffff';
           ctx.textBaseline = 'middle';
           ctx.textAlign = 'center';
           ctx.fillText(wmText, W - wmWidth / 2 - 24, 41);
         }
 
         // Subtitle
-        const fullLine = (els.dialogueInput.value || '').trim() || state.line || '어, 너 여기 있었네?';
+        const fullLine = baseLine;
         let subText = subTextOverride !== null ? subTextOverride : fullLine;
-        if (subTextOverride === null && state.subtitle === 'docu') {
+        if (subTextOverride === null && activeSub === 'docu') {
           const chars = Array.from(fullLine);
-          const shownCount = Math.min(chars.length, Math.max(1, Math.floor(elapsed / 0.072)));
+          const typeElapsed = frameCfg && frameCfg.partElapsed !== undefined ? frameCfg.partElapsed : elapsed;
+          const shownCount = Math.min(chars.length, Math.max(1, Math.floor(typeElapsed / 0.072)));
           subText = chars.slice(0, shownCount).join('');
         }
 
@@ -3766,7 +3814,7 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        if (state.subtitle === 'horror') {
+        if (activeSub === 'horror') {
           const jx = (Math.random() - 0.5) * 4;
           const jy = (Math.random() - 0.5) * 4;
           ctx.font = 'bold 58px "East Sea Dokdo", "Gungsuh", "Nanum Myeongjo", serif';
@@ -3777,7 +3825,7 @@
           ctx.strokeText(subText, W / 2 + jx, subY + jy);
           ctx.fillStyle = '#ff1e1e';
           ctx.fillText(subText, W / 2 + jx, subY + jy);
-        } else if (state.subtitle === 'comedy') {
+        } else if (activeSub === 'comedy') {
           const bounce = Math.sin(elapsed * 6) * 6;
           ctx.font = 'bold 52px "Jua", "Black Han Sans", "Malgun Gothic", sans-serif';
           ctx.lineWidth = 10;
@@ -3785,20 +3833,20 @@
           ctx.strokeText(subText, W / 2, subY + bounce);
           ctx.fillStyle = '#ffe600';
           ctx.fillText(subText, W / 2, subY + bounce);
-        } else if (state.subtitle === 'docu') {
+        } else if (activeSub === 'docu') {
           ctx.font = 'bold 40px "Nanum Myeongjo", "Batang", serif';
           const tw = ctx.measureText(subText).width + 40;
           ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
           ctx.fillRect(W / 2 - tw / 2, subY - 30, tw, 60);
           ctx.fillStyle = '#f8fafc';
           ctx.fillText(subText, W / 2, subY);
-        } else if (state.subtitle === 'romance') {
+        } else if (activeSub === 'romance') {
           ctx.font = 'bold 46px "Gowun Dodum", "Malgun Gothic", sans-serif';
           ctx.shadowColor = 'rgba(244, 63, 94, 0.95)';
           ctx.shadowBlur = 18;
           ctx.fillStyle = '#fff1f2';
           ctx.fillText(subText, W / 2, subY);
-        } else if (state.subtitle === 'news') {
+        } else if (activeSub === 'news') {
           ctx.font = 'bold 38px "Noto Sans KR", "Malgun Gothic", sans-serif';
           const newsTxt = `속보  ${subText}`;
           const tw = ctx.measureText(newsTxt).width + 64;
@@ -3810,7 +3858,7 @@
           ctx.fillText('속보', W / 2 - tw / 2 + 55, subY);
           ctx.fillStyle = '#ffffff';
           ctx.fillText(subText, W / 2 + 45, subY);
-        } else if (state.subtitle === 'shorts') {
+        } else if (activeSub === 'shorts') {
           ctx.font = 'bold 56px "Black Han Sans", "Jua", "Malgun Gothic", sans-serif';
           const tw = ctx.measureText(subText).width + 52;
           ctx.fillStyle = 'rgba(79, 70, 229, 0.9)';
@@ -3859,6 +3907,81 @@
         }
       }
 
+      async function patchWebmDuration(blob, durationMs) {
+        try {
+          const buf = await blob.arrayBuffer();
+          const bytes = new Uint8Array(buf);
+          const searchLimit = Math.min(bytes.length - 16, 4096);
+
+          // Find EBML Segment Info element: 0x15 0x49 0xA9 0x66
+          let infoIdx = -1;
+          for (let i = 0; i < searchLimit; i++) {
+            if (bytes[i] === 0x15 && bytes[i + 1] === 0x49 && bytes[i + 2] === 0xa9 && bytes[i + 3] === 0x66) {
+              infoIdx = i;
+              break;
+            }
+          }
+          if (infoIdx === -1) return blob;
+
+          const vintPos = infoIdx + 4;
+          const b0 = bytes[vintPos];
+          let vintLen = 1;
+          let mask = 0x80;
+          while (vintLen <= 4 && (b0 & mask) === 0) {
+            mask >>= 1;
+            vintLen++;
+          }
+          if (vintLen > 4) return blob;
+
+          let infoSize = b0 & (mask - 1);
+          for (let j = 1; j < vintLen; j++) {
+            infoSize = (infoSize << 8) | bytes[vintPos + j];
+          }
+
+          const contentStart = vintPos + vintLen;
+          const contentEnd = contentStart + infoSize;
+          if (contentEnd > bytes.length) return blob;
+
+          // Prepare 8-byte float64 duration in ms (WebM default TimecodeScale = 1,000,000 ns = 1 ms)
+          const f64Buf = new ArrayBuffer(8);
+          new DataView(f64Buf).setFloat64(0, durationMs, false);
+          const f64Bytes = new Uint8Array(f64Buf);
+
+          // Check if Duration (0x44 0x89) already exists inside Info
+          for (let i = contentStart; i < contentEnd - 10; i++) {
+            if (bytes[i] === 0x44 && bytes[i + 1] === 0x89 && bytes[i + 2] === 0x88) {
+              bytes.set(f64Bytes, i + 3);
+              return new Blob([bytes], { type: blob.type });
+            }
+          }
+
+          // Otherwise inject 11-byte Duration element at end of Info
+          const newSize = infoSize + 11;
+          const maxForVintLen = vintLen === 1 ? 126 : (1 << (vintLen * 7)) - 2;
+          if (newSize > maxForVintLen) return blob;
+
+          const out = new Uint8Array(bytes.length + 11);
+          out.set(bytes.subarray(0, contentEnd), 0);
+          out[contentEnd] = 0x44;
+          out[contentEnd + 1] = 0x89;
+          out[contentEnd + 2] = 0x88;
+          out.set(f64Bytes, contentEnd + 3);
+          out.set(bytes.subarray(contentEnd), contentEnd + 11);
+
+          // Update Info VINT size
+          let rem = newSize;
+          for (let j = vintLen - 1; j >= 1; j--) {
+            out[vintPos + j] = rem & 0xff;
+            rem >>= 8;
+          }
+          out[vintPos] = mask | rem;
+
+          return new Blob([out], { type: blob.type });
+        } catch (e) {
+          return blob;
+        }
+      }
+
       function exportVideoSilently() {
         if (typeof MediaRecorder === 'undefined') {
           alert('이 브라우저에서는 영상 파일 저장을 지원하지 않습니다. 최신 Chrome 또는 Edge를 사용해 주세요.');
@@ -3871,6 +3994,12 @@
         canvas.height = 720;
         const ctx = canvas.getContext('2d');
         refreshSvgCacheIfNeeded();
+
+        const useTwist = state.twistEnabled;
+        const fullLine = (els.dialogueInput.value || '').trim() || state.line || '어, 너 여기 있었네?';
+        const [part1Text, part2Text] = useTwist ? splitLineForTwist(fullLine) : [fullLine, fullLine];
+        const twistProfile = TWIST_PROFILES[state.twistGenre] || TWIST_PROFILES.horror;
+        let twistTriggered = false;
 
         // Silent background audio session (does not play out loud through speakers)
         const audioCtx = AudioEngine.setupSessionBuses(true, true);
@@ -3921,11 +4050,20 @@
           if (e.data && e.data.size > 0) recordedChunks.push(e.data);
         };
 
-        activeRecorder.onstop = () => {
+        let exportStart = performance.now();
+        let targetExportSec = 4.2;
+        if (state.voiceMode === 'mic' && state.micAudioBuffer) {
+          const micRate = state.micFx === 'helium' ? 1.45 : (state.micFx === 'monster' ? 0.68 : 1.0);
+          const micDur = state.micAudioBuffer.duration / micRate;
+          targetExportSec = Math.max(4.2, Math.min(12.0, micDur + 0.5));
+        }
+
+        activeRecorder.onstop = async () => {
           if (recordRafId) {
             cancelAnimationFrame(recordRafId);
             recordRafId = null;
           }
+          const actualDurationMs = Math.max(500, Math.round(performance.now() - exportStart));
           AudioEngine.stopAll();
           if (els.stageCustomVideo && !els.stageCustomVideo.paused) {
             try {
@@ -3934,7 +4072,10 @@
             } catch (e) {}
           }
           if (recordedChunks.length > 0) {
-            const blob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
+            let blob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
+            if (ext === 'webm') {
+              blob = await patchWebmDuration(blob, actualDurationMs);
+            }
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -3951,14 +4092,41 @@
 
         state.isRecording = true;
         updatePlaybackUI();
-        const exportStart = performance.now();
+        exportStart = performance.now();
         activeRecorder.start(200);
 
         const drawFrame = () => {
           if (!state.isRecording) return;
           const elapsed = (performance.now() - exportStart) / 1000;
-          renderStageFrameToCanvas(ctx, 1280, 720, elapsed);
-          if (elapsed >= 4.2) {
+
+          if (useTwist && elapsed >= 2.0 && !twistTriggered) {
+            twistTriggered = true;
+            AudioEngine.switchBgmAndSfxInSession(twistProfile.bgm, twistProfile.sfx);
+          }
+
+          let frameCfg = null;
+          if (useTwist) {
+            if (elapsed >= 2.0) {
+              frameCfg = {
+                subtitle: twistProfile.subtitle,
+                bgm: twistProfile.bgm,
+                filters: twistProfile.filters,
+                line: part2Text,
+                partElapsed: elapsed - 2.0
+              };
+            } else {
+              frameCfg = {
+                subtitle: state.subtitle,
+                bgm: state.bgm,
+                filters: state.filters,
+                line: part1Text,
+                partElapsed: elapsed
+              };
+            }
+          }
+
+          renderStageFrameToCanvas(ctx, 1280, 720, elapsed, null, frameCfg);
+          if (elapsed >= targetExportSec) {
             finishVideoRecording();
             return;
           }
@@ -4467,7 +4635,7 @@
           els.btnMicRecord.classList.add('recording');
           els.btnMicRecord.textContent = '⏹️ 녹음 끝내기 (말한 뒤 누르세요)';
           els.micStatusText.textContent = '🎙️ 녹음 중입니다... 대사를 크게 말해보세요!';
-          micMediaRecorder.start();
+          micMediaRecorder.start(200);
         } catch (err) {
           els.micStatusText.textContent = '마이크 권한이 거부되었거나 마이크를 찾을 수 없습니다.';
         }
